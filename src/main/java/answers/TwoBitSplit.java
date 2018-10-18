@@ -51,9 +51,9 @@ public class TwoBitSplit {
 			if(firstTwoBits == 3) { A_11.add(index); }
 		}
 		//Loop through the integers corresponding to indices_B
-		for(int i=0; i<indices_A.size(); i++) {
+		for(int i=0; i<indices_B.size(); i++) {
 			//Take first 2 elements and place into the 4 arrays to pass into child node
-			int index = indices_A.get(i);
+			int index = indices_B.get(i);
 			int firstTwoBits = portfolios[index]>>shift&Question1.INT_MASK;
 			if(firstTwoBits == 0) { B_00.add(index); }
 			if(firstTwoBits == 1) { B_01.add(index); }
