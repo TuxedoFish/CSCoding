@@ -7,9 +7,10 @@ import answers.Match;
 
 public class TwoBitSplit {
 	private int depth;
-
-	private ArrayList<Integer> indices_A;
-	private ArrayList<Integer> indices_B;
+	
+	//Only used if in lowest depth situation
+	private ArrayList<Integer> indicesA = new ArrayList<Integer>(); 
+	private ArrayList<Integer> indicesB = new ArrayList<Integer>(); 
 
 	//A array only matches with B so we need to differentiate them
 	private ArrayList<Integer> A_00 = new ArrayList<Integer>(); //0
@@ -29,15 +30,11 @@ public class TwoBitSplit {
 	private int depthA, depthB, depthC, depthD = 0;
 	private int maxDepth;
 
-	public TwoBitSplit(int depth, ArrayList<Integer> indices_A, 
-			ArrayList<Integer> indices_B) {
+	public TwoBitSplit(int depth) {
 		this.depth = depth;
 		children = new TwoBitSplit[4];
-		
-		this.indices_A = indices_A;
-		this.indices_B = indices_B;
 	}
-	public int split(int[] portfolios) {
+	public int split(int[] portfolios, ArrayList<Integer> indices_A, ArrayList<Integer> indices_B) {
 		//Initialise shift
 		int shift = Question1.NUMBER_OF_BITS - (Question1.BITS_OBSERVED*(depth+1));
 		//Loop through the integers corresponding to indices_A 
@@ -65,22 +62,24 @@ public class TwoBitSplit {
 
 		//Since the inputs were passed such that A and B match
 		//If we find matches BETWEEN A and B they are further matches i.e
-		if(A_00.size()>0 && B_11.size()>0) { children[0] = new TwoBitSplit(this.depth+1, A_00, B_11); childA = true; } 
-		if(A_01.size()>0 && B_10.size()>0) { children[1] = new TwoBitSplit(this.depth+1, A_01, B_10); childB = true; }
-		if(A_11.size()>0 && B_00.size()>0) { children[2] = new TwoBitSplit(this.depth+1, A_11, B_00); childC = true; }
-		if(A_10.size()>0 && B_01.size()>0) { children[3] = new TwoBitSplit(this.depth+1, A_10, B_01); childD = true; }
+		if(A_00.size()>0 && B_11.size()>0) { children[0] = new TwoBitSplit(this.depth+1); childA = true; } 
+		if(A_01.size()>0 && B_10.size()>0) { children[1] = new TwoBitSplit(this.depth+1); childB = true; }
+		if(A_11.size()>0 && B_00.size()>0) { children[2] = new TwoBitSplit(this.depth+1); childC = true; }
+		if(A_10.size()>0 && B_01.size()>0) { children[3] = new TwoBitSplit(this.depth+1); childD = true; }
 
 		//If no children we are at the end of our search
 		bottom = childA && childB && childC && childD;
 
 		if(bottom) {
 			maxDepth = depth;
+			this.indicesA = indicesA;
+			this.indicesB = indicesB;
 			return depth;
 		} else {
-			if(childA) { depthA = children[0].split(portfolios); }
-			if(childB) { depthB = children[1].split(portfolios); }
-			if(childC) { depthC = children[2].split(portfolios); }
-			if(childD) { depthD = children[3].split(portfolios); }
+			if(childA) { depthA = children[0].split(portfolios, A_00, B_11); }
+			if(childB) { depthB = children[1].split(portfolios, A_01, B_10); }
+			if(childC) { depthC = children[2].split(portfolios, A_11, B_00); }
+			if(childD) { depthD = children[3].split(portfolios, A_10, B_01); }
 
 			maxDepth = Math.max(Math.max(depthA, depthB), Math.max(depthC, depthD));
 			return maxDepth;
@@ -94,9 +93,9 @@ public class TwoBitSplit {
 
 		if(bottom) {
 			//return all of my matches as I am the lowest consecutive string of numbers
-			for(int i=0; i<indices_A.size(); i++) {
-				for(int j=0; j<indices_B.size(); j++) {
-					solutions.add(new Match(indices_A.get(i), indices_B.get(j)));
+			for(int i=0; i<indicesA.size(); i++) {
+				for(int j=0; j<indicesB.size(); j++) {
+					solutions.add(new Match(indicesA.get(i), indicesB.get(j)));
 				}
 			}
 		} else {

@@ -34,12 +34,12 @@ public class Question1 {
 		}
 
 		//Initialise the first nodes with 2 sets which are known to have matched
-		TwoBitSplit childA = new TwoBitSplit(1, M_00, M_11);
-		TwoBitSplit childB = new TwoBitSplit(1, M_01, M_10);
+		TwoBitSplit childA = new TwoBitSplit(1);
+		TwoBitSplit childB = new TwoBitSplit(1);
 
 		//Calculate which child (or both) has longest consecutive streak
-		int maxDepthA = childA.split(portfolios);
-		int maxDepthB = childB.split(portfolios);
+		int maxDepthA = childA.split(portfolios, M_00, M_11);
+		int maxDepthB = childB.split(portfolios, M_01, M_10);
 
 		int maxDepth = Math.max(maxDepthA, maxDepthB);
 
