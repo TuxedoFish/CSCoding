@@ -8,49 +8,47 @@ import answers.TwoBitSplit;
 
 public class Question1 {
 	//Constants that define both the problem and the way I solve it
-	public static int NUMBER_OF_BITS = 16;
-	public static int BITS_OBSERVED = 2;
-	public static int INT_MASK = 3;
-	
+	public static byte NUMBER_OF_BITS = 16;
+	public static byte BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Initialise shift
-		int shift = NUMBER_OF_BITS - BITS_OBSERVED;
+		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
+		byte depth=0;
 		
-		//For first, third etc
-		ArrayList<Integer> M_00 = new ArrayList<Integer>(); //0
-		ArrayList<Integer> M_01 = new ArrayList<Integer>(); //1
-		ArrayList<Integer> M_10 = new ArrayList<Integer>(); //2
-		ArrayList<Integer> M_11 = new ArrayList<Integer>(); //3
-		
+		//Splits array into 1 and 0 as we know that these will be a match since index < 100 we can store as a byte
+		ArrayList<Byte> M_0 = new ArrayList<Byte>(); //0
+		ArrayList<Byte> M_1 = new ArrayList<Byte>(); //1
+
+		//Only starts splitting when it finds some matches with a comparison value of 1 at the left most digit
+		boolean started = false;
 		//Loop through the whole list of ints
-		for(int i=0; i<portfolios.length; i++) {
-			//Take first 2 elements and place into the 4 arrays to pass into child node
-			int firstTwoBits = portfolios[i]>>shift&INT_MASK;
-			if(firstTwoBits == 0) { M_00.add(i); }
-			if(firstTwoBits == 1) { M_01.add(i); }
-			if(firstTwoBits == 2) { M_10.add(i); }
-			if(firstTwoBits == 3) { M_11.add(i); }
+		while(!started) {
+			for(byte i=0; i<portfolios.length; i++) {
+				//Take first 2 elements and place into the 4 arrays to pass into child node
+				//Since we are evaluating ONE BIT we can store as a boolean saving space
+				boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
+				if(firstTwoBits) { M_0.add(i); }
+				else { M_1.add(i); }
+			} 
+			if(M_0.size()==0 || M_1.size()==0) {
+				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
+				depth ++;
+				shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+			}
 		}
 
 		//Initialise the first nodes with 2 sets which are known to have matched
-		TwoBitSplit childA = new TwoBitSplit(1);
-		TwoBitSplit childB = new TwoBitSplit(1);
+		TwoBitSplit child = new TwoBitSplit((byte) (depth+1));
 
 		//Calculate which child (or both) has longest consecutive streak
-		int maxDepthA = childA.split(portfolios, M_00, M_11);
-		int maxDepthB = childB.split(portfolios, M_01, M_10);
+		child.split(portfolios, M_0, M_1);
 
-		int maxDepth = Math.max(maxDepthA, maxDepthB);
-
-		ArrayList<Match> bestMatches = new ArrayList<Match>();
-
-		if(maxDepthA==maxDepth) { bestMatches.addAll(childA.getPossibleMatches()); }
-		if(maxDepthB==maxDepth) { bestMatches.addAll(childB.getPossibleMatches()); }
+		ArrayList<Match> bestMatches = child.getPossibleMatches();
 
 		//Loop over last solutions to find best one
 		int maxEval = 0;
-		for(int i=0; i<bestMatches.size(); i++) {
+		for(byte i=0; i<bestMatches.size(); i++) {
 			int eval = bestMatches.get(i).getA()^bestMatches.get(i).getB();
 			if( eval > maxEval) { maxEval=eval; }
 		}
