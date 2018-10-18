@@ -43,22 +43,24 @@ public class TwoBitSplit {
 		//Loop through the integers corresponding to indices_A 
 		for(int i=0; i<indices_A.size(); i++) {
 			//Take first 2 elements and place into the 4 arrays to pass into child node
-			int index = indices_A.get(i);
-			int firstTwoBits = portfolios[index]>>shift&Question1.INT_MASK;
-			if(firstTwoBits == 0) { A_00.add(index); }
-			if(firstTwoBits == 1) { A_01.add(index); }
-			if(firstTwoBits == 2) { A_10.add(index); }
-			if(firstTwoBits == 3) { A_11.add(index); }
+			int indexA = indices_A.get(i);
+			int firstTwoBits = portfolios[indexA]>>shift&Question1.INT_MASK;
+		
+			if(firstTwoBits == 0) { A_00.add(indexA); }
+			if(firstTwoBits == 1) { A_01.add(indexA); }
+			if(firstTwoBits == 2) { A_10.add(indexA); }
+			if(firstTwoBits == 3) { A_11.add(indexA); }
 		}
 		//Loop through the integers corresponding to indices_B
 		for(int i=0; i<indices_B.size(); i++) {
 			//Take first 2 elements and place into the 4 arrays to pass into child node
-			int index = indices_B.get(i);
-			int firstTwoBits = portfolios[index]>>shift&Question1.INT_MASK;
-			if(firstTwoBits == 0) { B_00.add(index); }
-			if(firstTwoBits == 1) { B_01.add(index); }
-			if(firstTwoBits == 2) { B_10.add(index); }
-			if(firstTwoBits == 3) { B_11.add(index); }
+			int indexB = indices_B.get(i);
+			int firstTwoBits = portfolios[indexB]>>shift&Question1.INT_MASK;
+		
+			if(firstTwoBits == 0) { B_00.add(indexB); }
+			if(firstTwoBits == 1) { B_01.add(indexB); }
+			if(firstTwoBits == 2) { B_10.add(indexB); }
+			if(firstTwoBits == 3) { B_11.add(indexB); }
 		}
 
 		//Since the inputs were passed such that A and B match

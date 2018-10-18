@@ -46,7 +46,7 @@ public class Question1 {
 		ArrayList<Match> bestMatches = new ArrayList<Match>();
 
 		if(maxDepthA==maxDepth) { bestMatches.addAll(childA.getPossibleMatches()); }
-		if(maxDepthA==maxDepth) { bestMatches.addAll(childA.getPossibleMatches()); }
+		if(maxDepthB==maxDepth) { bestMatches.addAll(childB.getPossibleMatches()); }
 
 		//Loop over last solutions to find best one
 		int maxEval = 0;
