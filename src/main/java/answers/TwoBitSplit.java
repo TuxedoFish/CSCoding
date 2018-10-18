@@ -72,8 +72,8 @@ public class TwoBitSplit {
 
 		if(bottom) {
 			maxDepth = depth;
-			this.indicesA = indicesA;
-			this.indicesB = indicesB;
+			this.indicesA = indices_A;
+			this.indicesB = indices_B;
 			return depth;
 		} else {
 			if(childA) { depthA = children[0].split(portfolios, A_00, B_11); }
@@ -105,6 +105,7 @@ public class TwoBitSplit {
 			if(childC && children[2].getDepth()==maxDepth) { solutions.addAll(children[2].getPossibleMatches()); }
 			if(childD && children[3].getDepth()==maxDepth) { solutions.addAll(children[3].getPossibleMatches()); }
 		}
+		
 		return solutions;
 	}
 
