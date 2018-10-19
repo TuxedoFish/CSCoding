@@ -60,16 +60,18 @@ public class Question1 {
 			}
 		}
 
+		byte startingDepth = depth;
+		
 		//Initialise the first nodes with 2 sets which are known to have matched
 		TwoBitSplit child = new TwoBitSplit((byte) (depth+1));
 
 		//Calculate which child (or both) has longest consecutive streak
 		depth = child.split(portfolios, M_0, M_1);
-
-		if(depth==15) {
+		
+		if(depth==16) {
 			//We reached the depth of the final bit and there was a match so we have the solution already
-			//We have 111... 16 times
-			return (int) (Math.pow(2, 16) - 1);
+			//We have 111... 16-START times
+			return (int) (Math.pow(2, 16-startingDepth) - 1);
 		}
 		
 		bestMatches = child.getPossibleMatches(portfolios, M_0, M_1);

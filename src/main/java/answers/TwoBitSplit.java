@@ -51,7 +51,7 @@ public class TwoBitSplit {
 		if(A_1.size()>0 && B_0.size()>0) { children[1] = new TwoBitSplit((byte) (this.depth+1)); childB = true; }
 
 		//If no children we are at the end of our search
-		bottom = (!childA && !childB) || (depth==15);
+		bottom = (!childA && !childB) || (depth==16);
 
 		if(bottom) {
 			maxDepth = depth;
