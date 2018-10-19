@@ -29,11 +29,16 @@ public class Question1 {
 		
 		while(!started) {
 			for(byte i=0; i<portfolios.length; i++) {
-				//Take first 2 elements and place into the 4 arrays to pass into child node
-				//Since we are evaluating ONE BIT we can store as a boolean saving space
-				boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
-				if(firstTwoBits) { M_1.add(i); }
-				else { M_0.add(i); }
+				//In case the input has incorrectly contained signed ints
+				//If done here no need to do it elsewhere as all signed ints
+				//will be ignored in further steps
+				if(portfolios[i]>0) {
+					//Take first 2 elements and place into the 4 arrays to pass into child node
+					//Since we are evaluating ONE BIT we can store as a boolean saving space
+					boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
+					if(firstTwoBits) { M_1.add(i); }
+					else { M_0.add(i); }
+				}
 			} 
 			if(M_0.size()==0 || M_1.size()==0) {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
