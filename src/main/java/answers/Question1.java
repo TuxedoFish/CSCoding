@@ -74,7 +74,12 @@ public class Question1 {
 		for(byte i=0; i<bestMatches.size(); i++) {
 			//ERROR HERE: had been comparing the INDEXES not the values at those indexes so was getting
 			//Strange values when i debugged with a random data set, has been fixed now!
-			int eval = portfolios[bestMatches.get(i).getA()]^portfolios[bestMatches.get(i).getB()];
+			
+			//Potential edge case error: if they sendc 16 bit signed integers since ints in java are 32 bit
+			//We cannot be sure that the bits 16-32 are "safe" hence by &65535 we only get the value of the 
+			//the right most 16 bits hence our evaluated answer is never > 65535
+			
+			int eval = (portfolios[bestMatches.get(i).getA()]&65535)^(portfolios[bestMatches.get(i).getB()]&65535);
 			if( eval > maxEval) { maxEval=eval; }
 		}
 
