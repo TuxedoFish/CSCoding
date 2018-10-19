@@ -62,7 +62,7 @@ public class TwoBitSplit {
 
 			if(depthA>depthB) { return maxDepth = depthA; }
 			else if (depthA == depthB) { return maxDepth = depthB = depthA; }
-			else { return depthB; }
+			else { return maxDepth=depthB; }
 		} 
 	}
 	public int getDepth() {

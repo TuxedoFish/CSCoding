@@ -35,6 +35,7 @@ public class Question1 {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
 				depth ++;
 				shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+				M_0.clear(); M_1.clear();
 			} else {
 				started = true;
 			}
@@ -51,7 +52,7 @@ public class Question1 {
 		//Loop over last solutions to find best one
 		int maxEval = 0;
 		for(byte i=0; i<bestMatches.size(); i++) {
-			int eval = bestMatches.get(i).getA()^bestMatches.get(i).getB();
+			int eval = portfolios[bestMatches.get(i).getA()]^portfolios[bestMatches.get(i).getB()];
 			if( eval > maxEval) { maxEval=eval; }
 		}
 
