@@ -120,7 +120,11 @@ public class TwoBitSplit {
 				//We managed to find a better match
 				//otherwise collate all other results
 				newSolutions.addAll(skipChild.getPossibleMatches(portfolios, indexesA, indexesB));
-				return newSolutions;
+				if(newSolutions.size() == 0) {
+					return solutions;
+				} else {
+					return newSolutions;
+				}
 			} else {
 				mSkipTo ++;
 				if(mSkipTo>15) {
