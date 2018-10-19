@@ -58,7 +58,7 @@ public class Question1 {
 			return (int) (Math.pow(2, 16) - 1);
 		}
 		
-		bestMatches = child.getPossibleMatches(portfolios);
+		bestMatches = child.getPossibleMatches(portfolios, M_0, M_1);
 	
 		//Loop over last solutions to find best one
 		int maxEval = 0;

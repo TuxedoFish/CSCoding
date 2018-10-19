@@ -68,7 +68,7 @@ public class TwoBitSplit {
 	public int getDepth() {
 		return maxDepth;
 	}
-	public ArrayList<Match> getPossibleMatches(int []portfolios) {
+	public ArrayList<Match> getPossibleMatches(int []portfolios, ArrayList<Byte> indexesA, ArrayList<Byte> indexesB) {
 		ArrayList<Match> solutions = new ArrayList<Match>();
 
 		if(bottom) {
@@ -86,38 +86,40 @@ public class TwoBitSplit {
 			}
 		} else {
 			//otherwise collate all other results
-			if(childA && depthA==maxDepth) { solutions.addAll(children[0].getPossibleMatches(portfolios)); }
-			if(childB && depthB==maxDepth) { solutions.addAll(children[1].getPossibleMatches(portfolios)); }
+			if(childA && depthA==maxDepth) { solutions.addAll(children[0].getPossibleMatches(portfolios, A_0, B_1)); }
+			if(childB && depthB==maxDepth) { solutions.addAll(children[1].getPossibleMatches(portfolios, A_1, B_0)); }
 		}
 		
 		//If our consecutive run returns VERY many values then we want to simplify this process a little bit
 		//So we skip out 1 bit and start looking for the next consecutive string of 1s when we compare
-		if(solutions.size() > 20) {
-			solutions = getNextConsecutiveRun(portfolios, solutions);
+		if(solutions.size() > 20 && bottom) {
+			solutions = getNextConsecutiveRun(portfolios, solutions, indexesA, indexesB);
 		}
 		
 		return solutions;
 	}
-	public ArrayList<Match> getNextConsecutiveRun(int[] portfolios, ArrayList<Match> solutions) {
+	public ArrayList<Match> getNextConsecutiveRun(int[] portfolios, ArrayList<Match> solutions, 
+			ArrayList<Byte> indexesA, ArrayList<Byte> indexesB) {
 		//This function will skip out one bit in order to find the next consecutive run of bits 
 		//Applies to the case where very many of the portfolios give the same string of 1s
 		boolean foundArray = false;
+		//skipping one bit which we know has no more consecutive but this strand must be best...
 		byte mSkipTo = (byte)(depth + 1);
-		TwoBitSplit skipChild;
-		byte skipDepthA = 0, skipDepthB = 0;
+		
+		TwoBitSplit skipChild; 
+		
+		byte skipDepth = 0;
 		ArrayList<Match> newSolutions = new ArrayList<Match>();
 		
 		while(!foundArray) {
 			skipChild = new TwoBitSplit(mSkipTo);
+		
+			skipDepth = skipChild.split(portfolios, indexesA, indexesB);
 			
-			if(childA) { skipDepthA = skipChild.split(portfolios, A_0, B_1); }
-			if(childB) { skipDepthB = skipChild.split(portfolios, A_1, B_0); }
-			
-			if(skipDepthA!=(byte)(depth+1) || skipDepthB!=(byte)(depth+1)) {
+			if(skipDepth!=(byte)mSkipTo) {
 				//We managed to find a better match
 				//otherwise collate all other results
-				if(childA && skipDepthA>=skipDepthB) { newSolutions.addAll(children[0].getPossibleMatches(portfolios)); }
-				if(childB && skipDepthB>=skipDepthA) { newSolutions.addAll(children[1].getPossibleMatches(portfolios)); }
+				newSolutions.addAll(skipChild.getPossibleMatches(portfolios, indexesA, indexesB));
 				return newSolutions;
 			} else {
 				mSkipTo ++;
