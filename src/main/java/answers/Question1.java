@@ -71,7 +71,8 @@ public class Question1 {
 	
 		//Loop over last solutions to find best one
 		int maxEval = 0;
-		for(byte i=0; i<bestMatches.size(); i++) {
+		//Here loop must be INTEGER as can have more values then 128!!!
+		for(int i=0; i<bestMatches.size(); i++) {
 			//ERROR HERE: had been comparing the INDEXES not the values at those indexes so was getting
 			//Strange values when i debugged with a random data set, has been fixed now!
 			
