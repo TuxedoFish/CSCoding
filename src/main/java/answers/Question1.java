@@ -33,9 +33,14 @@ public class Question1 {
 			} 
 			if(M_0.size()==0 || M_1.size()==0) {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
-				depth ++;
-				shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
-				M_0.clear(); M_1.clear();
+				if(depth<15) {
+					depth ++;
+					shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+					M_0.clear(); M_1.clear();
+				} else {
+					//Went all the way down the chain and found 0 matches
+					return 0;
+				}
 			} else {
 				started = true;
 			}
