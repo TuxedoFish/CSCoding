@@ -68,7 +68,7 @@ public class TwoBitSplit {
 	public int getDepth() {
 		return maxDepth;
 	}
-	public ArrayList<Match> getPossibleMatches() {
+	public ArrayList<Match> getPossibleMatches(int []portfolios) {
 		ArrayList<Match> solutions = new ArrayList<Match>();
 
 		if(bottom) {
@@ -86,11 +86,48 @@ public class TwoBitSplit {
 			}
 		} else {
 			//otherwise collate all other results
-			if(childA && depthA==maxDepth) { solutions.addAll(children[0].getPossibleMatches()); }
-			if(childB && depthB==maxDepth) { solutions.addAll(children[1].getPossibleMatches()); }
+			if(childA && depthA==maxDepth) { solutions.addAll(children[0].getPossibleMatches(portfolios)); }
+			if(childB && depthB==maxDepth) { solutions.addAll(children[1].getPossibleMatches(portfolios)); }
+		}
+		
+		//If our consecutive run returns VERY many values then we want to simplify this process a little bit
+		//So we skip out 1 bit and start looking for the next consecutive string of 1s when we compare
+		if(solutions.size() > 100) {
+			solutions = getNextConsecutiveRun(portfolios, solutions);
 		}
 		
 		return solutions;
+	}
+	public ArrayList<Match> getNextConsecutiveRun(int[] portfolios, ArrayList<Match> solutions) {
+		//This function will skip out one bit in order to find the next consecutive run of bits 
+		//Applies to the case where very many of the portfolios give the same string of 1s
+		boolean foundArray = false;
+		byte mSkipTo = (byte)(depth + 1);
+		TwoBitSplit skipChild;
+		byte skipDepthA = 0, skipDepthB = 0;
+		ArrayList<Match> newSolutions = new ArrayList<Match>();
+		
+		while(!foundArray) {
+			skipChild = new TwoBitSplit(mSkipTo);
+			
+			if(childA) { skipDepthA = skipChild.split(portfolios, A_0, B_1); }
+			if(childB) { skipDepthB = skipChild.split(portfolios, A_1, B_0); }
+			
+			if(skipDepthA!=(byte)(depth+1) || skipDepthB!=(byte)(depth+1)) {
+				//We managed to find a better match
+				//otherwise collate all other results
+				if(childA && skipDepthA>=skipDepthB) { newSolutions.addAll(children[0].getPossibleMatches(portfolios)); }
+				if(childB && skipDepthB>=skipDepthA) { newSolutions.addAll(children[1].getPossibleMatches(portfolios)); }
+				return newSolutions;
+			} else {
+				mSkipTo ++;
+				if(mSkipTo>15) {
+					return solutions;
+				}
+			}
+		}
+		System.out.println("ERROR :  at line 129 of TwoBitSplit Should have already sent solutions");
+		return null;
 	}
 
 }

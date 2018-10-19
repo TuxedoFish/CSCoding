@@ -20,9 +20,9 @@ public class Question1 {
 		ArrayList<Byte> M_0 = new ArrayList<Byte>(); //0
 		ArrayList<Byte> M_1 = new ArrayList<Byte>(); //1
 
-		//Only starts splitting when it finds some matches with a comparison value of 1 at the left most digit
+		ArrayList<Match> bestMatches = new ArrayList<Match>();
 		boolean started = false;
-		//Loop through the whole list of ints
+		
 		while(!started) {
 			for(byte i=0; i<portfolios.length; i++) {
 				//Take first 2 elements and place into the 4 arrays to pass into child node
@@ -50,10 +50,16 @@ public class Question1 {
 		TwoBitSplit child = new TwoBitSplit((byte) (depth+1));
 
 		//Calculate which child (or both) has longest consecutive streak
-		child.split(portfolios, M_0, M_1);
+		depth = child.split(portfolios, M_0, M_1);
 
-		ArrayList<Match> bestMatches = child.getPossibleMatches();
-
+		if(depth==15) {
+			//We reached the depth of the final bit and there was a match so we have the solution already
+			//We have 111... 16 times
+			return (int) (Math.pow(2, 16) - 1);
+		}
+		
+		bestMatches = child.getPossibleMatches(portfolios);
+	
 		//Loop over last solutions to find best one
 		int maxEval = 0;
 		for(byte i=0; i<bestMatches.size(); i++) {
