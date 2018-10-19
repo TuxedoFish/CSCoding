@@ -12,6 +12,10 @@ public class Question1 {
 	public static byte BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
+		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
+		if(portfolios.length<=1) {
+			return 0;
+		}
 		//Initialise shift
 		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
 		byte depth=0;
