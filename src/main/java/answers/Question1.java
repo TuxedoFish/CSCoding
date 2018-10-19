@@ -28,8 +28,8 @@ public class Question1 {
 				//Take first 2 elements and place into the 4 arrays to pass into child node
 				//Since we are evaluating ONE BIT we can store as a boolean saving space
 				boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
-				if(firstTwoBits) { M_0.add(i); }
-				else { M_1.add(i); }
+				if(firstTwoBits) { M_1.add(i); }
+				else { M_0.add(i); }
 			} 
 			if(M_0.size()==0 || M_1.size()==0) {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility

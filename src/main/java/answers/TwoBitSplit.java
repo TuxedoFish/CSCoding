@@ -32,8 +32,8 @@ public class TwoBitSplit {
 			byte indexA = indices_A.get(i);
 			boolean firstTwoBits = (portfolios[indexA]>>shift&1)==1;
 			//Either a 1 or is not a 1 (a 0)
-			if(firstTwoBits) { A_0.add(indexA); }
-			else { A_1.add(indexA); }
+			if(firstTwoBits) { A_1.add(indexA); }
+			else { A_0.add(indexA); }
 		}
 		//Loop through the integers corresponding to indices_B
 		for(byte j=0; j<indices_B.size(); j++) {
@@ -41,8 +41,8 @@ public class TwoBitSplit {
 			byte indexB = indices_B.get(j);
 			boolean firstTwoBits = (portfolios[indexB]>>shift&1)==1;
 			//Either a 1 or is not a 1 (a 0)
-			if(firstTwoBits) { B_0.add(indexB); }
-			else { B_1.add(indexB); }
+			if(firstTwoBits) { B_1.add(indexB); }
+			else { B_0.add(indexB); }
 		}
 
 		//Since the inputs were passed such that A and B match
