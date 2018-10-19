@@ -32,7 +32,7 @@ public class Question1 {
 				//In case the input has incorrectly contained signed ints
 				//If done here no need to do it elsewhere as all signed ints
 				//will be ignored in further steps
-				if(portfolios[i]>0) {
+				if(portfolios[i]>=0) {
 					//Take first 2 elements and place into the 4 arrays to pass into child node
 					//Since we are evaluating ONE BIT we can store as a boolean saving space
 					boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
