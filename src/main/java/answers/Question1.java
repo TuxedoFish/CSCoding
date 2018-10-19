@@ -35,6 +35,8 @@ public class Question1 {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
 				depth ++;
 				shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+			} else {
+				started = true;
 			}
 		}
 
