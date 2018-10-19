@@ -27,6 +27,11 @@ public class Question1 {
 		ArrayList<Match> bestMatches = new ArrayList<Match>();
 		boolean started = false;
 		
+		//I use bytes in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
+		//I will also use this in the splitted arrays as they will therefore always be smaller then 100
+		
+		//HENCE THIS SOLUTION IS INVALID IF N>128
+		
 		while(!started) {
 			for(byte i=0; i<portfolios.length; i++) {
 				//In case the input has incorrectly contained signed ints
