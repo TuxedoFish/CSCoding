@@ -8,68 +8,48 @@ import answers.TwoBitSplit;
 
 public class Question1 {
 	//Constants that define both the problem and the way I solve it
-	public static int NUMBER_OF_BITS = 16;
-	public static int BITS_OBSERVED = 1;
-	private static int SMALL_ARRAY = 16;
+	public static byte NUMBER_OF_BITS = 16;
+	public static byte BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
 		if(portfolios.length<=1) {
 			return 0;
 		}
-		
 		//Initialise shift
-		int shift = (int)(NUMBER_OF_BITS-BITS_OBSERVED);
-		int depth=0;
+		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
+		byte depth=0;
 		
-		//Splits array into 1 and 0 as we know that these will be a match since index < 100 we can store as a int
-		ArrayList<Integer> M_0 = new ArrayList<Integer>(); //0
-		ArrayList<Integer> M_1 = new ArrayList<Integer>(); //1
+		//Splits array into 1 and 0 as we know that these will be a match since index < 100 we can store as a byte
+		ArrayList<Byte> M_0 = new ArrayList<Byte>(); //0
+		ArrayList<Byte> M_1 = new ArrayList<Byte>(); //1
 
 		ArrayList<Match> bestMatches = new ArrayList<Match>();
 		boolean started = false;
 		
-		//I use ints in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
+		//I use bytes in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
 		//I will also use this in the splitted arrays as they will therefore always be smaller then 100
 		
 		//HENCE THIS SOLUTION IS INVALID IF N>128
 		
-		boolean isPattern = true;
-		int currentDifferent = 0;
-		int[] distinctIntegers = new int[5];
-		
 		while(!started) {
-			for(int i=0; i<portfolios.length; i++) {
+			for(byte i=0; i<portfolios.length; i++) {
 				//In case the input has incorrectly contained signed ints
 				//If done here no need to do it elsewhere as all signed ints
 				//will be ignored in further steps
-				if((portfolios[i]&65535)>=0) {
+				if(portfolios[i]>=0) {
 					//Take first 2 elements and place into the 4 arrays to pass into child node
 					//Since we are evaluating ONE BIT we can store as a boolean saving space
 					boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
 					if(firstTwoBits) { M_1.add(i); }
 					else { M_0.add(i); }
-					
-					if(currentDifferent<5) {
-						boolean isDistinct = true;
-						for(int k=0; k<4; k++) {
-							if(distinctIntegers[k]==portfolios[i]) {
-								isDistinct = false;
-							}
-						}
-						if(isDistinct) {
-							distinctIntegers[currentDifferent] = portfolios[i];
-							currentDifferent ++;
-							if(currentDifferent>=5) { isPattern = false; }
-						}
-					}
 				}
 			} 
 			if(M_0.size()==0 || M_1.size()==0) {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
 				if(depth<=15) {
 					depth ++;
-					shift = (int) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+					shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
 					M_0.clear(); M_1.clear();
 				} else {
 					//Went all the way down the chain and found 0 matches
@@ -79,40 +59,19 @@ public class Question1 {
 				started = true;
 			}
 		}
-		
-		//If there was only 5 distinct items it makes sense just to loop through those items to save time
-		if(isPattern) {
-			//Only 1 item so 0 is best
-			if(currentDifferent == 1) { return 0; }
-			//Only 2 items so must be the solution of them
-			if(currentDifferent == 2) { return (distinctIntegers[0]&65535)^(distinctIntegers[1]&65535); }
-			
-			int maxEvalBruteForce = 0;
-			for(int i=0; i<currentDifferent; i++) {
-				for(int j=0; j<currentDifferent; j++) {
-					if(i!=j) {
-						int value = (distinctIntegers[i]&65535)^(distinctIntegers[j]&65535);
-						if(value > maxEvalBruteForce) {
-							maxEvalBruteForce = value;
-						}
-					}
-				}
-			}
-			return maxEvalBruteForce;
-		}
 
-		int startingDepth = depth;
+		int startDepth = depth;
 		
 		//Initialise the first nodes with 2 sets which are known to have matched
-		TwoBitSplit child = new TwoBitSplit((int) (depth+1));
+		TwoBitSplit child = new TwoBitSplit((byte) (depth+1));
 
 		//Calculate which child (or both) has longest consecutive streak
 		depth = child.split(portfolios, M_0, M_1);
-		
+
 		if(depth==16) {
 			//We reached the depth of the final bit and there was a match so we have the solution already
-			//We have 111... 16-START times
-			return (int) (Math.pow(2, 16-startingDepth) - 1);
+			//We have 111... 16 times
+			return (int) (Math.pow(2, 16-startDepth) - 1);
 		}
 		
 		bestMatches = child.getPossibleMatches(portfolios, M_0, M_1);
