@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Question5 {
-
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
 		//Trivial solution if only one value in array
 		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
@@ -29,6 +28,8 @@ public class Question5 {
 
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
+		
+		Integer[] nextValuesAArray = null; Integer[] nextValuesBArray = null;
 		boolean isA = true;
 		
 		//Now that we have a sorted array we want to look for 2 perfect matches but also store any combination 
@@ -55,10 +56,10 @@ public class Question5 {
 		//Now we need to calculate the logic for going even deeper
 		while(true) {
 			if(isA) {
-				for(int i=0; i<nextValuesA.size(); i++) {
+				for(int i=nextValuesAArray.length-1; i>0; i--) {
 					boolean limitReached = false;
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesA.get(i) + allocs.get(j);
+						int combinedValue = nextValuesAArray[i] + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
@@ -67,10 +68,10 @@ public class Question5 {
 					}
 				}
 			} else {
-				for(int i=0; i<nextValuesB.size(); i++) {
+				for(int i=nextValuesBArray.length-1; i>0; i--) {
 					boolean limitReached = false;
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesB.get(i) + allocs.get(j);
+						int combinedValue = nextValuesBArray[i] + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
@@ -79,12 +80,23 @@ public class Question5 {
 					}
 				}
 			}
-			isA = !isA;
 			numbersAdded ++;
 			if(nextStage) {
 				return numbersAdded + 1;
 			}
-			if(isA) { nextValuesA.clear(); } else { nextValuesB.clear(); }
+
+			if(isA) { 
+				nextValuesA.clear();
+				//We want a sorted array of all the next items to save time for our logic
+				nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
+				Arrays.sort(nextValuesBArray);
+			} else { 
+				nextValuesB.clear(); 
+				//We want a sorted array of all the next items to save time for our logic
+				nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
+				Arrays.sort(nextValuesAArray);
+			}
+			isA = !isA;
 		}
 	}
 
