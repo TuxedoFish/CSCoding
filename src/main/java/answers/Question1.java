@@ -10,7 +10,7 @@ public class Question1 {
 	//Constants that define both the problem and the way I solve it
 	public static int NUMBER_OF_BITS = 16;
 	public static int BITS_OBSERVED = 1;
-	private static int SMALL_ARRAY = 16;
+	private static int SMALL_ARRAY = 400;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
