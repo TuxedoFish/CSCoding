@@ -28,11 +28,11 @@ public class Question1 {
 						int value = (portfolios[i]&65535)^(portfolios[j]&65535);
 						if(value > maxEvalBruteForce) {
 							maxEvalBruteForce = value;
-							return maxEvalBruteForce;
 						}
 					}
 				}
 			}
+			return maxEvalBruteForce;
 		}
 		//Initialise shift
 		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
@@ -50,6 +50,10 @@ public class Question1 {
 		
 		//HENCE THIS SOLUTION IS INVALID IF N>128
 		
+		boolean isPattern = true;
+		int currentDifferent = 0;
+		int[] distinctIntegers = new int[5];
+		
 		while(!started) {
 			for(byte i=0; i<portfolios.length; i++) {
 				//In case the input has incorrectly contained signed ints
@@ -61,6 +65,20 @@ public class Question1 {
 					boolean firstTwoBits = (portfolios[i]>>shift&1)==1;
 					if(firstTwoBits) { M_1.add(i); }
 					else { M_0.add(i); }
+					
+					if(currentDifferent<5) {
+						boolean isDistinct = true;
+						for(int k=0; k<4; k++) {
+							if(distinctIntegers[k]==portfolios[i]) {
+								isDistinct = false;
+							}
+						}
+						if(isDistinct) {
+							distinctIntegers[currentDifferent] = portfolios[i];
+							currentDifferent ++;
+							if(currentDifferent>=5) { isPattern = false; }
+						}
+					}
 				}
 			} 
 			if(M_0.size()==0 || M_1.size()==0) {
@@ -76,6 +94,27 @@ public class Question1 {
 			} else {
 				started = true;
 			}
+		}
+		
+		//If there was only 5 distinct items it makes sense just to loop through those items to save time
+		if(isPattern) {
+			//Only 1 item so 0 is best
+			if(currentDifferent == 1) { return 0; }
+			//Only 2 items so must be the solution of them
+			if(currentDifferent == 2) { return (distinctIntegers[0]&65535)^(distinctIntegers[1]&65535); }
+			
+			int maxEvalBruteForce = 0;
+			for(int i=0; i<currentDifferent; i++) {
+				for(int j=0; j<currentDifferent; j++) {
+					if(i!=j) {
+						int value = (distinctIntegers[i]&65535)^(distinctIntegers[j]&65535);
+						if(value > maxEvalBruteForce) {
+							maxEvalBruteForce = value;
+						}
+					}
+				}
+			}
+			return maxEvalBruteForce;
 		}
 
 		byte startingDepth = depth;
