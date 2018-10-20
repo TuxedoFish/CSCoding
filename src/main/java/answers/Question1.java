@@ -10,11 +10,29 @@ public class Question1 {
 	//Constants that define both the problem and the way I solve it
 	public static byte NUMBER_OF_BITS = 16;
 	public static byte BITS_OBSERVED = 1;
+	private static int SMALL_ARRAY = 16;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
 		if(portfolios.length<=1) {
 			return 0;
+		}
+		//Logically brute force makes sense if we have a small array as it is very few operations n<=16
+		//Logically brute force loops through N^2 times, whereas my method at each level loops through
+		//up to but not necessarily N items and this could happen up to 16 times.
+		if(portfolios.length<=SMALL_ARRAY) {
+			int maxEvalBruteForce = 0;
+			for(int i=0; i<portfolios.length; i++) {
+				for(int j=0; j<portfolios.length; j++) {
+					if(i!=j) {
+						int value = (portfolios[i]&65535)^(portfolios[j]&65535);
+						if(value > maxEvalBruteForce) {
+							maxEvalBruteForce = value;
+							return maxEvalBruteForce;
+						}
+					}
+				}
+			}
 		}
 		//Initialise shift
 		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
