@@ -24,11 +24,14 @@ public class Question5 {
 		}
 		
 		int totalAchievableValue = totalValue-trueMin;
+
+		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
+		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
+		boolean isA = true;
 		
 		//Now that we have a sorted array we want to look for 2 perfect matches but also store any combination 
 		//of 2 allocations so we can then check those on the next round
 		boolean nextStage = false;
-		ArrayList<Integer> nextValues = new ArrayList<Integer>();
 		for(int i=allocs.size()-1; i>=0; i--) {
 			//Only keeps going until the value would be greater then totalValue or not
 			//possible to make even with smallest value
@@ -38,16 +41,40 @@ public class Question5 {
 				//We only had to combine 2 in order to get the best match hence best match at this stage
 				if(combinedValue==totalValue) { return 2; } 
 				else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-				else if(combinedValue<totalAchievableValue) { nextValues.add(combinedValue); }
+				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
 			}
 		}
 		//Here we reached the value that is one min value away from the true value so we know it will be one level away
 		if(nextStage) {return 3;}
-		
+
+		int numbersAdded = 2;
 		//Now we need to calculate the logic for going even deeper
-		
-		// TODO Auto-generated method stub
-		return -1;
+		while(true) {
+			if(isA) {
+				for(int i=0; i<nextValuesA.size(); i++) {
+					for(int j=0; j<allocs.size(); j++) {
+						int combinedValue = nextValuesA.get(i) + allocs.get(j);
+						if(combinedValue==totalValue) { return numbersAdded + 1; } 
+						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
+						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
+					}
+				}
+			} else {
+				for(int i=0; i<nextValuesB.size(); i++) {
+					for(int j=0; j<allocs.size(); j++) {
+						int combinedValue = nextValuesA.get(i) + allocs.get(j);
+						if(combinedValue==totalValue) { return numbersAdded; } 
+						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
+						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
+					}
+				}
+			}
+			isA = !isA;
+			numbersAdded ++;
+			if(nextStage) {
+				return numbersAdded + 1;
+			}
+		}
 	}
 
 }
