@@ -51,6 +51,12 @@ public class Question5 {
 		}
 		//Here we reached the value that is one min value away from the true value so we know it will be one level away
 		if(nextStage) {return 3;}
+		
+		//We want a sorted array of all the next items to save time for our logic
+		nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
+		Arrays.sort(nextValuesAArray);
+		//We then delete repetitions and use this
+		nextValuesA = removeRepetions(nextValuesBArray);
 
 		int numbersAdded = 2;
 		//Now we need to calculate the logic for going even deeper
@@ -59,7 +65,7 @@ public class Question5 {
 				for(int i=nextValuesAArray.length-1; i>0; i--) {
 					boolean limitReached = false;
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesAArray[i] + allocs.get(j);
+						int combinedValue = nextValuesA.get(i) + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
@@ -68,10 +74,10 @@ public class Question5 {
 					}
 				}
 			} else {
-				for(int i=nextValuesBArray.length-1; i>0; i--) {
+				for(int i=nextValuesB.size()-1; i>0; i--) {
 					boolean limitReached = false;
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesBArray[i] + allocs.get(j);
+						int combinedValue = nextValuesB.get(i) + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
@@ -89,14 +95,33 @@ public class Question5 {
 				//We want a sorted array of all the next items to save time for our logic
 				nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
 				Arrays.sort(nextValuesBArray);
+				//We then delete repetitions and use this
+				nextValuesB = removeRepetions(nextValuesBArray);
 			} else { 
 				nextValuesB.clear(); 
 				//We want a sorted array of all the next items to save time for our logic
 				nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 				Arrays.sort(nextValuesAArray);
+				//We then delete repetitions and use this
+				nextValuesA = removeRepetions(nextValuesBArray);
 			}
 			isA = !isA;
 		}
+	}
+	/*
+	 * A function for removing any repetions in an array of already summed values
+	 */
+	public static ArrayList<Integer> removeRepetions(Integer[] array) {
+		ArrayList<Integer> returnList = new ArrayList<Integer>();
+		//Delete repetitions 
+		int minimumValue = -1;
+		for(int i=0; i<array.length; i++) {
+			if(array[i]>minimumValue) {
+				returnList.add(array[i]);
+				minimumValue=array[i];
+			} 
+		}
+		return returnList;
 	}
 
 }
