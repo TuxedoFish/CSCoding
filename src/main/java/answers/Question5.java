@@ -6,6 +6,8 @@ import java.util.Arrays;
 public class Question5 {
 
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
+		//Trivial solution if only one value in array
+		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
 		//Having it in size order will help us massively
 		Arrays.sort(allowedAllocations);
 		
@@ -42,6 +44,8 @@ public class Question5 {
 				if(combinedValue==totalValue) { return 2; } 
 				else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
+				
+				if(combinedValue>totalAchievableValue) { limitReached = true; }
 			}
 		}
 		//Here we reached the value that is one min value away from the true value so we know it will be one level away
@@ -52,20 +56,26 @@ public class Question5 {
 		while(true) {
 			if(isA) {
 				for(int i=0; i<nextValuesA.size(); i++) {
-					for(int j=0; j<allocs.size(); j++) {
+					boolean limitReached = false;
+					for(int j=0; j<allocs.size() && !limitReached; j++) {
 						int combinedValue = nextValuesA.get(i) + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
+						
+						if(combinedValue>totalAchievableValue) { limitReached = true; }
 					}
 				}
 			} else {
 				for(int i=0; i<nextValuesB.size(); i++) {
-					for(int j=0; j<allocs.size(); j++) {
-						int combinedValue = nextValuesA.get(i) + allocs.get(j);
-						if(combinedValue==totalValue) { return numbersAdded; } 
+					boolean limitReached = false;
+					for(int j=0; j<allocs.size() && !limitReached; j++) {
+						int combinedValue = nextValuesB.get(i) + allocs.get(j);
+						if(combinedValue==totalValue) { return numbersAdded + 1; } 
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
+						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
+						
+						if(combinedValue>totalAchievableValue) { limitReached = true; }
 					}
 				}
 			}
@@ -74,6 +84,7 @@ public class Question5 {
 			if(nextStage) {
 				return numbersAdded + 1;
 			}
+			if(isA) { nextValuesA.clear(); } else { nextValuesB.clear(); }
 		}
 	}
 
