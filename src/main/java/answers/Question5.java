@@ -84,7 +84,6 @@ public class Question5 {
 			if(nextStage) {
 				return numbersAdded + 1;
 			}
-
 			if(isA) { 
 				nextValuesA.clear();
 				//We want a sorted array of all the next items to save time for our logic
