@@ -92,7 +92,7 @@ public class TwoBitSplit {
 		
 		//If our consecutive run returns VERY many values then we want to simplify this process a little bit
 		//So we skip out 1 bit and start looking for the next consecutive string of 1s when we compare
-		if(solutions.size() > 20 && bottom) {
+		if(solutions.size() > Math.pow(portfolios.length, 1.5) && bottom) {
 			solutions = getNextConsecutiveRun(portfolios, solutions, indexesA, indexesB);
 		}
 		
