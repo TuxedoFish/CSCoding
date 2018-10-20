@@ -8,8 +8,8 @@ import answers.TwoBitSplit;
 
 public class Question1 {
 	//Constants that define both the problem and the way I solve it
-	public static byte NUMBER_OF_BITS = 16;
-	public static byte BITS_OBSERVED = 1;
+	public static int NUMBER_OF_BITS = 16;
+	public static int BITS_OBSERVED = 1;
 	private static int SMALL_ARRAY = 16;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
@@ -35,17 +35,17 @@ public class Question1 {
 			return maxEvalBruteForce;
 		}
 		//Initialise shift
-		byte shift = (byte)(NUMBER_OF_BITS-BITS_OBSERVED);
-		byte depth=0;
+		int shift = (int)(NUMBER_OF_BITS-BITS_OBSERVED);
+		int depth=0;
 		
-		//Splits array into 1 and 0 as we know that these will be a match since index < 100 we can store as a byte
-		ArrayList<Byte> M_0 = new ArrayList<Byte>(); //0
-		ArrayList<Byte> M_1 = new ArrayList<Byte>(); //1
+		//Splits array into 1 and 0 as we know that these will be a match since index < 100 we can store as a int
+		ArrayList<Integer> M_0 = new ArrayList<Integer>(); //0
+		ArrayList<Integer> M_1 = new ArrayList<Integer>(); //1
 
 		ArrayList<Match> bestMatches = new ArrayList<Match>();
 		boolean started = false;
 		
-		//I use bytes in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
+		//I use ints in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
 		//I will also use this in the splitted arrays as they will therefore always be smaller then 100
 		
 		//HENCE THIS SOLUTION IS INVALID IF N>128
@@ -55,7 +55,7 @@ public class Question1 {
 		int[] distinctIntegers = new int[5];
 		
 		while(!started) {
-			for(byte i=0; i<portfolios.length; i++) {
+			for(int i=0; i<portfolios.length; i++) {
 				//In case the input has incorrectly contained signed ints
 				//If done here no need to do it elsewhere as all signed ints
 				//will be ignored in further steps
@@ -85,7 +85,7 @@ public class Question1 {
 				//No matches found for the digit hence all must be 1 or all must 0 (unlikely) but a possibility
 				if(depth<=15) {
 					depth ++;
-					shift = (byte) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
+					shift = (int) (NUMBER_OF_BITS - (BITS_OBSERVED*(depth+1)));
 					M_0.clear(); M_1.clear();
 				} else {
 					//Went all the way down the chain and found 0 matches
@@ -117,10 +117,10 @@ public class Question1 {
 			return maxEvalBruteForce;
 		}
 
-		byte startingDepth = depth;
+		int startingDepth = depth;
 		
 		//Initialise the first nodes with 2 sets which are known to have matched
-		TwoBitSplit child = new TwoBitSplit((byte) (depth+1));
+		TwoBitSplit child = new TwoBitSplit((int) (depth+1));
 
 		//Calculate which child (or both) has longest consecutive streak
 		depth = child.split(portfolios, M_0, M_1);
