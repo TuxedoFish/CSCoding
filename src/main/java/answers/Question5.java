@@ -58,7 +58,7 @@ public class Question5 {
 		nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 		Arrays.sort(nextValuesAArray);
 		//We then delete repetitions and use this
-		nextValuesA = removeRepetions(nextValuesBArray);
+		nextValuesA = removeRepetions(nextValuesAArray);
 		
 		//Stops us going down routes we have already seen
 		numbersSeen.addAll(nextValuesA);
@@ -70,7 +70,7 @@ public class Question5 {
 		//Now we need to calculate the logic for going even deeper
 		while(true) {
 			if(isA) {
-				for(int i=nextValuesAArray.length-1; i>0; i--) {
+				for(int i=nextValuesA.size()-1; i>0; i--) {
 					boolean limitReached = false;
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
 						int combinedValue = nextValuesA.get(i) + allocs.get(j);
@@ -115,7 +115,7 @@ public class Question5 {
 				nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 				Arrays.sort(nextValuesAArray);
 				//We then delete repetitions and use this
-				nextValuesA = removeRepetions(nextValuesBArray);
+				nextValuesA = removeRepetions(nextValuesAArray);
 				//Stops us going down routes we have already seen
 				nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
 				numbersSeen.addAll(nextValuesA);
