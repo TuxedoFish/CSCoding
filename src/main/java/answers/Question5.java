@@ -143,7 +143,6 @@ public class Question5 {
 	}
 	public static ArrayList<Integer> removeSeenValues(ArrayList<Integer> toRemove, ArrayList<Integer> seenValues) {
 		int j=0;
-		System.out.println("I HAVE SEEN : " + seenValues.size() + " values");
 		for(int i=0; i<toRemove.size(); i++) {
 			while(j<seenValues.size() && toRemove.get(i)>=seenValues.get(j)) {
 				if(toRemove.get(i).equals(seenValues.get(j))) {toRemove.remove(i);}
