@@ -29,6 +29,8 @@ public class Question5 {
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
 		
+		ArrayList<Integer> numbersSeen = new ArrayList<>();
+		
 		Integer[] nextValuesAArray = null; Integer[] nextValuesBArray = null;
 		boolean isA = true;
 		
@@ -57,6 +59,12 @@ public class Question5 {
 		Arrays.sort(nextValuesAArray);
 		//We then delete repetitions and use this
 		nextValuesA = removeRepetions(nextValuesBArray);
+		
+		//Stops us going down routes we have already seen
+		numbersSeen.addAll(nextValuesA);
+		Integer[] numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
+		Arrays.sort(numbersSeenArray);
+		numbersSeen.addAll(Arrays.asList(numbersSeenArray));
 
 		int numbersAdded = 2;
 		//Now we need to calculate the logic for going even deeper
@@ -67,10 +75,9 @@ public class Question5 {
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
 						int combinedValue = nextValuesA.get(i) + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
+						else if(combinedValue>totalValue) { limitReached=true; }
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
-						
-						if(combinedValue>totalAchievableValue) { limitReached = true; }
+						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue);}
 					}
 				}
 			} else {
@@ -79,10 +86,9 @@ public class Question5 {
 					for(int j=0; j<allocs.size() && !limitReached; j++) {
 						int combinedValue = nextValuesB.get(i) + allocs.get(j);
 						if(combinedValue==totalValue) { return numbersAdded + 1; } 
+						else if(combinedValue>totalValue) { limitReached=true; }
 						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
-						
-						if(combinedValue>totalAchievableValue) { limitReached = true; }
+						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);}
 					}
 				}
 			}
@@ -97,6 +103,12 @@ public class Question5 {
 				Arrays.sort(nextValuesBArray);
 				//We then delete repetitions and use this
 				nextValuesB = removeRepetions(nextValuesBArray);
+				//Stops us going down routes we have already seen
+				nextValuesB = removeSeenValues(nextValuesB, numbersSeen);
+				numbersSeen.addAll(nextValuesB);
+				numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
+				Arrays.sort(numbersSeenArray);
+				numbersSeen = removeRepetions(numbersSeenArray);
 			} else { 
 				nextValuesB.clear(); 
 				//We want a sorted array of all the next items to save time for our logic
@@ -104,6 +116,12 @@ public class Question5 {
 				Arrays.sort(nextValuesAArray);
 				//We then delete repetitions and use this
 				nextValuesA = removeRepetions(nextValuesBArray);
+				//Stops us going down routes we have already seen
+				nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
+				numbersSeen.addAll(nextValuesA);
+				numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
+				Arrays.sort(numbersSeenArray);
+				numbersSeen = removeRepetions(numbersSeenArray);
 			}
 			isA = !isA;
 		}
@@ -123,5 +141,15 @@ public class Question5 {
 		}
 		return returnList;
 	}
-
+	public static ArrayList<Integer> removeSeenValues(ArrayList<Integer> toRemove, ArrayList<Integer> seenValues) {
+		int j=0;
+		System.out.println("I HAVE SEEN : " + seenValues.size() + " values");
+		for(int i=0; i<toRemove.size(); i++) {
+			while(j<seenValues.size() && toRemove.get(i)>=seenValues.get(j)) {
+				if(toRemove.get(i).equals(seenValues.get(j))) {toRemove.remove(i);}
+				j++;
+			}
+		}
+		return toRemove;
+	}
 }
