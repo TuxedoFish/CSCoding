@@ -31,7 +31,7 @@ public class Question5 {
 			if((int)(allocs.size()*0.1)>100) {
 				loopUntil = (int) (allocs.size()*0.9);
 			} else {
-				loopUntil = allocs.size()-50;
+				loopUntil = allocs.size()-10;
 			}
 		}
 		
@@ -85,7 +85,7 @@ public class Question5 {
 				if((int)(allocs.size()*0.1)>100) {
 					loopUntil = (int) (allocs.size()*0.9);
 				} else {
-					loopUntil = allocs.size()-50;
+					loopUntil = allocs.size()-10;
 				}
 				bigEnough = true;
 			}
