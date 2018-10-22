@@ -27,11 +27,10 @@ public class Question5 {
 		
 		int totalAchievableValue = totalValue-trueMin;
 		
-		int maxValue = allocs.get(allocs.size()-1);
+		int maxValue = 0;
+		if(allocs.size()==0) {System.err.println("WE HAD : " + allowedAllocations.length + " AND HAVE : 0" );} 
+		else {maxValue = allocs.get(allocs.size()-1);}
 		int loopUntil = 0;
-//		if(totalValue>maxValue && allocs.size()>20) {
-//			loopUntil = allocs.size()-10;
-//		}
 		
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();

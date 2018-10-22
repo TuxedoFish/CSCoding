@@ -12,14 +12,15 @@ public class Question1 {
 	public static int BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
-		float startTime = System.nanoTime();
-		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
+		System.out.println(portfolios.length);
+		//Edge case: size 1 or 0
 		if(portfolios.length<=1) {
 			return 0;
 		}
 
 		int maxEvalBruteForce = 0;
 		for(int i=0; i<portfolios.length; i++) {
+			System.out.println(portfolios[i]);
 			for(int j=0; j<portfolios.length; j++) {
 				if(i!=j && (portfolios[i]&65535)>0 && (portfolios[j]&65535)>0) {
 					int value = (portfolios[i]&65535)^(portfolios[j]&65535);
@@ -29,9 +30,7 @@ public class Question1 {
 				}
 			}
 		}
-		float finishTime = System.nanoTime();
-		System.out.println( "ANSWER" + maxEvalBruteForce );
-		System.out.println("IN: " + (finishTime - startTime));
+		System.out.println( "ANSWER: " + maxEvalBruteForce );
 		
 		return maxEvalBruteForce;
 	}
