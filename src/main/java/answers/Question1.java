@@ -70,8 +70,6 @@ public class Question1 {
 		}
 		
 		bestMatches = child.getPossibleMatches(portfolios, M_0, M_1);
-	
-		System.out.println("BEST DEPTH : " + depth + " SIZE OF BRUTE FORCE FINAL CHECK : " + bestMatches.size());
 		
 		//Loop over last solutions to find best one
 		int maxEval = 0;
