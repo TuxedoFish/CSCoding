@@ -149,7 +149,7 @@ public class Question5 {
 				}
 			} else { 
 				nextValuesB.clear(); 
-				if(nextValuesB.size()==0) {return 0;}
+				if(nextValuesA.size()==0) {return 0;}
 				if(!bigEnough) {
 					//We want a sorted array of all the next items to save time for our logic
 					nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
