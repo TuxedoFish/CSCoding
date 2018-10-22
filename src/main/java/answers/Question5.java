@@ -67,12 +67,6 @@ public class Question5 {
 		Arrays.sort(nextValuesAArray);
 		nextValuesA=removeRepetions(nextValuesAArray);
 		
-		//Stops us going down routes we have already seen
-		numbersSeen.addAll(nextValuesA);
-		Integer[] numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
-		Arrays.sort(numbersSeenArray);
-		numbersSeen.addAll(Arrays.asList(numbersSeenArray));
-		
 		//Here we reached the value that is one min value away from the true value so we know it will be one level away
 		if(nextStage) {return 3;}
 		
@@ -138,12 +132,7 @@ public class Question5 {
 					nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
 					Arrays.sort(nextValuesBArray);
 					nextValuesB = removeRepetions(nextValuesBArray);
-					if(nextValuesB.size()==0) {stopped = true;}//Stops us going down routes we have already seen
-					nextValuesB = removeSeenValues(nextValuesB, numbersSeen);
-					numbersSeen.addAll(nextValuesB);
-					numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
-					Arrays.sort(numbersSeenArray);
-					numbersSeen = removeRepetions(numbersSeenArray);
+					if(nextValuesB.size()==0) {stopped = true;}
 				}
 			} else { 
 				nextValuesB.clear(); 
@@ -154,12 +143,6 @@ public class Question5 {
 					Arrays.sort(nextValuesAArray);
 					nextValuesA = removeRepetions(nextValuesAArray);
 					if(nextValuesA.size()==0) {stopped = true;}
-					//Stops us going down routes we have already seen
-					nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
-					numbersSeen.addAll(nextValuesA);
-					numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
-					Arrays.sort(numbersSeenArray);
-					numbersSeen = removeRepetions(numbersSeenArray);
 				}
 			}
 			isA = !isA;
@@ -179,17 +162,5 @@ public class Question5 {
 			} 
 		}
 		return returnList;
-	}
-	
-	public static ArrayList<Integer> removeSeenValues(ArrayList<Integer> toRemove, ArrayList<Integer> seenValues) {
-		int j=0;
-		for(int i=0; i<toRemove.size(); i++) {
-			while(j<seenValues.size()-1 && toRemove.get(i)>=seenValues.get(j)) {
-				if(toRemove.get(i).equals(seenValues.get(j))) {toRemove.remove(i);}
-				j++;
-				if(j>=seenValues.size()) { return toRemove; }
-			}
-		}
-		return toRemove;
 	}
 }
