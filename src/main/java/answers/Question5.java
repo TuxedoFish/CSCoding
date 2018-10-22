@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Question5 {
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
-		System.out.println("ARRAY SIZE : " + allowedAllocations.length);
+		System.out.println("ARRAY SIZE : " + allowedAllocations.length + " TOTAL VALUE : " + totalValue);
 		//Trivial solution if only one value in array
 		if(allowedAllocations.length==0) { return 0; }
 		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
@@ -32,7 +32,7 @@ public class Question5 {
 		int maxValue = allocs.get(allocs.size()-1);
 		float density = (maxValue-trueMin)/allocs.size();
 		int loopUntil = 0;
-		if(totalValue>maxValue) {
+		if(totalValue>maxValue && allocs.size()>10) {
 			loopUntil = allocs.size()-2;
 		}
 		System.out.println ("MIN : " + trueMin + ", MAX : " + maxValue + ", DENSITY : " + density);
@@ -82,7 +82,7 @@ public class Question5 {
 		while(!stopped) {
 			loopUntil = 0;
 			boolean bigEnough = false;
-			if(totalValue>maxValue*(numbersAdded+1)) {
+			if(totalValue>maxValue*(numbersAdded+1) && allocs.size()>10) {
 				loopUntil = allocs.size()-2;
 				bigEnough = true;
 			}
