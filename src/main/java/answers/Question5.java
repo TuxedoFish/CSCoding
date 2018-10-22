@@ -11,7 +11,7 @@ public class Question5 {
 		//Having it in size order will help us massively
 		Arrays.sort(allowedAllocations);
 		
-		//Now we define an array that will hold no duplicates or values higher then totalVal
+		//Now we define an array that will hold no duplicates or values higher then totalValue
 		ArrayList<Integer> allocs = new ArrayList<Integer>();
 		//Puts only unique values and values lower then the total into an arraylist (still sorted)
 		int minimumValue = -1;
@@ -28,7 +28,7 @@ public class Question5 {
 		int totalAchievableValue = totalValue-trueMin;
 		
 		int maxValue = 0;
-		if(allocs.size()==0) {System.err.println("WE HAD : " + allowedAllocations.length + " AND HAVE : 0" );} 
+		if(allocs.size()==0) {return 0;} 
 		else {maxValue = allocs.get(allocs.size()-1);}
 		int loopUntil = 0;
 		
