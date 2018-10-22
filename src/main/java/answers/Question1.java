@@ -13,7 +13,7 @@ public class Question1 {
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
-		System.out.println(portfolios.length);
+		System.out.println("Q1 : " + portfolios.length);
 		if(portfolios.length<=1) {
 			return 0;
 		}
