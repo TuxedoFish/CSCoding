@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 public class Question5 {
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
-		System.out.println("ARRAY SIZE : " + allowedAllocations.length + " TOTAL VALUE : " + totalValue);
 		//Trivial solution if only one value in array
 		if(allowedAllocations.length==0) { return 0; }
 		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
@@ -27,20 +26,15 @@ public class Question5 {
 		}
 		
 		int totalAchievableValue = totalValue-trueMin;
-		int totalMinValue = totalValue-allocs.get(allocs.size()-1);
 		
 		int maxValue = allocs.get(allocs.size()-1);
-		float density = (maxValue-trueMin)/allocs.size();
 		int loopUntil = 0;
-		if(totalValue>maxValue && allocs.size()>20) {
-			loopUntil = allocs.size()-2;
-		}
-		System.out.println ("MIN : " + trueMin + ", MAX : " + maxValue + ", DENSITY : " + density);
+//		if(totalValue>maxValue && allocs.size()>20) {
+//			loopUntil = allocs.size()-10;
+//		}
 		
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
-		
-		ArrayList<Integer> numbersSeen = new ArrayList<>();
 		
 		Integer[] nextValuesAArray = null; Integer[] nextValuesBArray = null;
 		boolean isA = true;
@@ -126,7 +120,6 @@ public class Question5 {
 			if(nextStage) {return numbersAdded+1;}
 			if(isA) { 
 				nextValuesA.clear();
-				if(nextValuesB.size()==0) {return 0;}
 				if(!bigEnough) {
 					//We want a sorted array of all the next items to save time for our logic
 					nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
@@ -136,7 +129,6 @@ public class Question5 {
 				}
 			} else { 
 				nextValuesB.clear(); 
-				if(nextValuesA.size()==0) {return 0;}
 				if(!bigEnough) {
 					//We want a sorted array of all the next items to save time for our logic
 					nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
@@ -148,7 +140,7 @@ public class Question5 {
 			isA = !isA;
 		}
 		//Would never reach here
-		return 1;
+		return 0;
 	}
 	
 	public static ArrayList<Integer> removeRepetions(Integer[] array) {
