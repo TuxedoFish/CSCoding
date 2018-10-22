@@ -13,6 +13,7 @@ public class Question1 {
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
+		System.out.println(portfolios.length);
 		if(portfolios.length<=1) {
 			return 0;
 		}
@@ -76,6 +77,8 @@ public class Question1 {
 		
 		bestMatches = child.getPossibleMatches(portfolios, M_0, M_1);
 	
+		System.out.println("BEST DEPTH : " + depth + " SIZE OF BRUTE FORCE FINAL CHECK : " + bestMatches.size());
+		
 		//Loop over last solutions to find best one
 		int maxEval = 0;
 		//Here loop must be INTEGER as can have more values then 128!!!
