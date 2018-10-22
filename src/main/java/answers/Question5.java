@@ -24,6 +24,13 @@ public class Question5 {
 			} else if (allowedAllocations[i]==totalValue) { return 1; }
 		}
 		
+		int maxValue = allocs.get(allocs.size()-1);
+		float density = (maxValue-trueMin)/allocs.size();
+		int loopUntil = 0;
+		if(density > 1 && totalValue>maxValue && allocs.size()>100) {
+			loopUntil = allocs.size()-100;
+		}
+		
 		int totalAchievableValue = totalValue-trueMin;
 
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
@@ -37,18 +44,17 @@ public class Question5 {
 		//Now that we have a sorted array we want to look for 2 perfect matches but also store any combination 
 		//of 2 allocations so we can then check those on the next round
 		boolean nextStage = false;
-		for(int i=allocs.size()-1; i>=0; i--) {
+		for(int i=allocs.size()-1; i>=loopUntil; i--) {
 			//Only keeps going until the value would be greater then totalValue or not
 			//possible to make even with smallest value
 			boolean limitReached = false;
-			for(int j=0; j<allocs.size() && !limitReached; j++) {
+			for(int j=0; j<i && !limitReached; j++) {
 				int combinedValue = allocs.get(i) + allocs.get(j);
 				//We only had to combine 2 in order to get the best match hence best match at this stage
-				if(combinedValue==totalValue) { return 2; } 
+				if(combinedValue==totalValue) { return 2;} 
 				else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
-				
-				if(combinedValue>totalAchievableValue) { limitReached = true; }
+				if(combinedValue>totalValue) { limitReached=true; }
+				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);} 
 			}
 		}
 		//Here we reached the value that is one min value away from the true value so we know it will be one level away
@@ -69,26 +75,49 @@ public class Question5 {
 		int numbersAdded = 2;
 		//Now we need to calculate the logic for going even deeper
 		while(true) {
+			loopUntil = 0;
+			boolean bigEnough = false;
+			if(density > 1 && totalValue>maxValue*numbersAdded && allocs.size()>100) {
+				loopUntil = allocs.size()-100;
+				bigEnough = true;
+				System.out.println("LOOP UNTIL : " + loopUntil + " START AT " + (allocs.size()-1));
+			}
 			if(isA) {
 				for(int i=nextValuesA.size()-1; i>0; i--) {
 					boolean limitReached = false;
-					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesA.get(i) + allocs.get(j);
-						if(combinedValue==totalValue) { return numbersAdded + 1; } 
-						else if(combinedValue>totalValue) { limitReached=true; }
-						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue);}
+					if(!bigEnough) {
+						for(int j=0; j<allocs.size()&&!limitReached; j++) {
+							int combinedValue = nextValuesA.get(i) + allocs.get(j);
+							if(combinedValue==totalValue) {return numbersAdded+1;} 
+							else if(combinedValue>totalValue) { limitReached=true; }
+							else if(combinedValue==totalAchievableValue) { nextStage = true; } 
+							else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue);}
+						}
+					} else {
+						for(int j=(allocs.size()-1); j>loopUntil; j--) {
+							int combinedValue = nextValuesA.get(i) + allocs.get(j);
+							if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
+							if(combinedValue==totalAchievableValue) { nextStage = true; } 
+						}
 					}
 				}
 			} else {
 				for(int i=nextValuesB.size()-1; i>0; i--) {
 					boolean limitReached = false;
-					for(int j=0; j<allocs.size() && !limitReached; j++) {
-						int combinedValue = nextValuesB.get(i) + allocs.get(j);
-						if(combinedValue==totalValue) { return numbersAdded + 1; } 
-						else if(combinedValue>totalValue) { limitReached=true; }
-						else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);}
+					if(!bigEnough) {
+						for(int j=0; j<allocs.size()&&!limitReached; j++) {
+							int combinedValue = nextValuesB.get(i) + allocs.get(j);
+							if(combinedValue==totalValue) { return numbersAdded + 1; } 
+							else if(combinedValue==totalAchievableValue) { nextStage = true; }
+							else if(combinedValue>totalValue) { limitReached=true; }
+							else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);}
+						}
+					} else {
+						for(int j=(allocs.size()-1); j>loopUntil;j--) {
+							int combinedValue = nextValuesB.get(i) + allocs.get(j);
+							if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
+							if(combinedValue==totalAchievableValue) { nextStage = true; } 
+						}
 					}
 				}
 			}
