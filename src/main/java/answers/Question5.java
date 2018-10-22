@@ -6,9 +6,11 @@ import java.util.Arrays;
 public class Question5 {
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
 		//Trivial solution if only one value in array
+		if(allowedAllocations.length==0) { return 0; }
 		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
 		//Having it in size order will help us massively
 		Arrays.sort(allowedAllocations);
+		System.out.println("ARRAY SIZE : " + allowedAllocations.length);
 		
 		//Now we define an array that will hold no duplicates or values higher then totalVal
 		ArrayList<Integer> allocs = new ArrayList<Integer>();
@@ -37,6 +39,7 @@ public class Question5 {
 				loopUntil = allocs.size()-10;
 			}
 		}
+		System.out.println ("MIN : " + trueMin + ", MAX : " + maxValue + ", DENSITY : " + density);
 		
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
@@ -67,7 +70,6 @@ public class Question5 {
 		nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 		Arrays.sort(nextValuesAArray);
 		nextValuesA=removeRepetions(nextValuesAArray);
-		System.out.println("VALUES A SIZE : " + nextValuesA.size());
 		
 		//Stops us going down routes we have already seen
 		numbersSeen.addAll(nextValuesA);
@@ -185,7 +187,6 @@ public class Question5 {
 	
 	public static ArrayList<Integer> removeSeenValues(ArrayList<Integer> toRemove, ArrayList<Integer> seenValues) {
 		int j=0;
-		System.out.println("I HAVE SEEN : " + seenValues.size() + " values");
 		for(int i=0; i<toRemove.size(); i++) {
 			while(j<seenValues.size()-1 && toRemove.get(i)>=seenValues.get(j)) {
 				if(toRemove.get(i).equals(seenValues.get(j))) {toRemove.remove(i);}
