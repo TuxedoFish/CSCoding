@@ -5,12 +5,12 @@ import java.util.Arrays;
 
 public class Question5 {
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
+		System.out.println("ARRAY SIZE : " + allowedAllocations.length);
 		//Trivial solution if only one value in array
 		if(allowedAllocations.length==0) { return 0; }
 		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
 		//Having it in size order will help us massively
 		Arrays.sort(allowedAllocations);
-		System.out.println("ARRAY SIZE : " + allowedAllocations.length);
 		
 		//Now we define an array that will hold no duplicates or values higher then totalVal
 		ArrayList<Integer> allocs = new ArrayList<Integer>();
