@@ -34,6 +34,8 @@ public class Question5 {
 		int loopUntil = 0;
 		if(totalValue>maxValue && allocs.size()>10) {
 			loopUntil = allocs.size()-2;
+		} else if(totalValue>maxValue) {
+			loopUntil = (int)(allocs.size()*0.6);
 		}
 		System.out.println ("MIN : " + trueMin + ", MAX : " + maxValue + ", DENSITY : " + density);
 		
@@ -84,6 +86,9 @@ public class Question5 {
 			boolean bigEnough = false;
 			if(totalValue>maxValue*(numbersAdded+1) && allocs.size()>10) {
 				loopUntil = allocs.size()-2;
+				bigEnough = true;
+			} else if(totalValue>maxValue) {
+				loopUntil = (int)(allocs.size()*0.6);
 				bigEnough = true;
 			}
 			if(isA) {
