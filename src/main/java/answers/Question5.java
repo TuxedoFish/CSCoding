@@ -84,16 +84,12 @@ public class Question5 {
 		while(!stopped) {
 			loopUntil = 0;
 			boolean bigEnough = false;
-			if(totalValue>maxValue*numbersAdded && allocs.size()>20) {
-				if((int)(allocs.size()*0.1)<10) {
-					loopUntil = (int) (allocs.size()*0.9);
-				} else {
-					loopUntil = allocs.size()-10;
-				}
+			if(totalValue>maxValue*(numbersAdded+1) && allocs.size()>20) {
+				loopUntil = allocs.size()-2;
 				bigEnough = true;
 			}
 			if(isA) {
-				for(int i=nextValuesA.size()-1; i>0; i--) {
+				for(int i=nextValuesA.size()-1; i>=0; i--) {
 					boolean limitReached = false;
 					if(!bigEnough) {
 						for(int j=0; j<allocs.size()&&!limitReached; j++) {
@@ -112,7 +108,7 @@ public class Question5 {
 					}
 				}
 			} else {
-				for(int i=nextValuesB.size()-1; i>0; i--) {
+				for(int i=nextValuesB.size()-1; i>=0; i--) {
 					boolean limitReached = false;
 					if(!bigEnough) {
 						for(int j=0; j<allocs.size()&&!limitReached; j++) {
@@ -132,32 +128,41 @@ public class Question5 {
 				}
 			}
 			numbersAdded ++;
+			if(totalValue<=maxValue*(numbersAdded+1) && allocs.size()>20) {
+				bigEnough = false;
+			}
 			if(nextStage) {return numbersAdded+1;}
 			if(isA) { 
 				nextValuesA.clear();
-				//We want a sorted array of all the next items to save time for our logic
-				nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
-				Arrays.sort(nextValuesBArray);
-				nextValuesB = removeRepetions(nextValuesBArray);
-				if(nextValuesB.size()==0) {stopped = true;}//Stops us going down routes we have already seen
-				nextValuesB = removeSeenValues(nextValuesB, numbersSeen);
-				numbersSeen.addAll(nextValuesB);
-				numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
-				Arrays.sort(numbersSeenArray);
-				numbersSeen = removeRepetions(numbersSeenArray);
+				if(nextValuesB.size()==0) {return 0;}
+				if(!bigEnough) {
+					//We want a sorted array of all the next items to save time for our logic
+					nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
+					Arrays.sort(nextValuesBArray);
+					nextValuesB = removeRepetions(nextValuesBArray);
+					if(nextValuesB.size()==0) {stopped = true;}//Stops us going down routes we have already seen
+					nextValuesB = removeSeenValues(nextValuesB, numbersSeen);
+					numbersSeen.addAll(nextValuesB);
+					numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
+					Arrays.sort(numbersSeenArray);
+					numbersSeen = removeRepetions(numbersSeenArray);
+				}
 			} else { 
 				nextValuesB.clear(); 
-				//We want a sorted array of all the next items to save time for our logic
-				nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
-				Arrays.sort(nextValuesAArray);
-				nextValuesA = removeRepetions(nextValuesAArray);
-				if(nextValuesA.size()==0) {stopped = true;}
-				//Stops us going down routes we have already seen
-				nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
-				numbersSeen.addAll(nextValuesA);
-				numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
-				Arrays.sort(numbersSeenArray);
-				numbersSeen = removeRepetions(numbersSeenArray);
+				if(nextValuesB.size()==0) {return 0;}
+				if(!bigEnough) {
+					//We want a sorted array of all the next items to save time for our logic
+					nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
+					Arrays.sort(nextValuesAArray);
+					nextValuesA = removeRepetions(nextValuesAArray);
+					if(nextValuesA.size()==0) {stopped = true;}
+					//Stops us going down routes we have already seen
+					nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
+					numbersSeen.addAll(nextValuesA);
+					numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
+					Arrays.sort(numbersSeenArray);
+					numbersSeen = removeRepetions(numbersSeenArray);
+				}
 			}
 			isA = !isA;
 		}
