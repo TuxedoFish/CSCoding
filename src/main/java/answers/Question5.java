@@ -27,11 +27,11 @@ public class Question5 {
 		int maxValue = allocs.get(allocs.size()-1);
 		float density = (maxValue-trueMin)/allocs.size();
 		int loopUntil = 0;
-		if(density > 1 && totalValue>maxValue) {
+		if(totalValue>maxValue) {
 			if((int)(allocs.size()*0.1)>100) {
 				loopUntil = (int) (allocs.size()*0.9);
 			} else {
-				loopUntil = allocs.size()-100;
+				loopUntil = allocs.size()-50;
 			}
 		}
 		
@@ -81,11 +81,11 @@ public class Question5 {
 		while(true) {
 			loopUntil = 0;
 			boolean bigEnough = false;
-			if(density > 1 && totalValue>maxValue) {
+			if(totalValue>maxValue*numbersAdded) {
 				if((int)(allocs.size()*0.1)>100) {
 					loopUntil = (int) (allocs.size()*0.9);
 				} else {
-					loopUntil = allocs.size()-100;
+					loopUntil = allocs.size()-50;
 				}
 				bigEnough = true;
 			}
