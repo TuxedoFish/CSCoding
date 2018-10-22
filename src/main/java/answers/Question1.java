@@ -13,7 +13,6 @@ public class Question1 {
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		//Edge case: if there is no portfolios or 1 portfolio "combining" 2 portfolios has no meaning so return 0
-		System.out.println("Q1 : " + portfolios.length);
 		if(portfolios.length<=1) {
 			return 0;
 		}
@@ -27,11 +26,6 @@ public class Question1 {
 
 		ArrayList<Match> bestMatches = new ArrayList<Match>();
 		boolean started = false;
-		
-		//I use bytes in the for loop as it is specified that the array is never bigger then 100 so this is acceptable
-		//I will also use this in the splitted arrays as they will therefore always be smaller then 100
-		
-		//HENCE THIS SOLUTION IS INVALID IF N>128
 		
 		while(!started) {
 			for(int i=0; i<portfolios.length; i++) {

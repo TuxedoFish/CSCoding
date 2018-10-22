@@ -79,9 +79,19 @@ public class TwoBitSplit {
 					solutions.add(new Match(A_0.get(i), B_0.get(j)));
 				}
 			}
+			for(int i=0; i<A_0.size(); i++) {
+				for(int j=0; j<B_1.size(); j++) {
+					solutions.add(new Match(A_0.get(i), B_1.get(j)));
+				}
+			}
 			for(int i=0; i<A_1.size(); i++) {
 				for(int j=0; j<B_1.size(); j++) {
 					solutions.add(new Match(A_1.get(i), B_1.get(j)));
+				}
+			}
+			for(int i=0; i<A_1.size(); i++) {
+				for(int j=0; j<B_0.size(); j++) {
+					solutions.add(new Match(A_1.get(i), B_0.get(j)));
 				}
 			}
 		} else {
