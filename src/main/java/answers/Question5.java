@@ -80,7 +80,6 @@ public class Question5 {
 			if(density > 1 && totalValue>maxValue*numbersAdded && allocs.size()>100) {
 				loopUntil = allocs.size()-100;
 				bigEnough = true;
-				System.out.println("LOOP UNTIL : " + loopUntil + " START AT " + (allocs.size()-1));
 			}
 			if(isA) {
 				for(int i=nextValuesA.size()-1; i>0; i--) {
