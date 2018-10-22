@@ -24,10 +24,13 @@ public class Question5 {
 			} else if (allowedAllocations[i]==totalValue) { return 1; }
 		}
 		
+		int totalAchievableValue = totalValue-trueMin;
+		int totalMinValue = totalValue-allocs.get(allocs.size()-1);
+		
 		int maxValue = allocs.get(allocs.size()-1);
 		float density = (maxValue-trueMin)/allocs.size();
 		int loopUntil = 0;
-		if(totalValue>maxValue) {
+		if(totalValue>maxValue && allocs.size()>20) {
 			if((int)(allocs.size()*0.1)<10) {
 				loopUntil = (int) (allocs.size()*0.9);
 			} else {
@@ -35,8 +38,6 @@ public class Question5 {
 			}
 		}
 		
-		int totalAchievableValue = totalValue-trueMin;
-
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
 		
@@ -52,36 +53,38 @@ public class Question5 {
 			//Only keeps going until the value would be greater then totalValue or not
 			//possible to make even with smallest value
 			boolean limitReached = false;
-			for(int j=0; j<i && !limitReached; j++) {
+			for(int j=0; j<allocs.size()-loopUntil && !limitReached; j++) {
 				int combinedValue = allocs.get(i) + allocs.get(j);
 				//We only had to combine 2 in order to get the best match hence best match at this stage
-				if(combinedValue==totalValue) { return 2;} 
+				if(combinedValue==totalValue) {return 2;} 
 				else if(combinedValue==totalAchievableValue) { nextStage = true; } 
 				if(combinedValue>totalValue) { limitReached=true; }
 				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);} 
 			}
 		}
-		//Here we reached the value that is one min value away from the true value so we know it will be one level away
-		if(nextStage) {return 3;}
 		
 		//We want a sorted array of all the next items to save time for our logic
 		nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 		Arrays.sort(nextValuesAArray);
-		//We then delete repetitions and use this
-		nextValuesA = removeRepetions(nextValuesAArray);
+		nextValuesA=removeRepetions(nextValuesAArray);
+		System.out.println("VALUES A SIZE : " + nextValuesA.size());
 		
 		//Stops us going down routes we have already seen
 		numbersSeen.addAll(nextValuesA);
 		Integer[] numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
 		Arrays.sort(numbersSeenArray);
 		numbersSeen.addAll(Arrays.asList(numbersSeenArray));
-
+		
+		//Here we reached the value that is one min value away from the true value so we know it will be one level away
+		if(nextStage) {return 3;}
+		
 		int numbersAdded = 2;
 		//Now we need to calculate the logic for going even deeper
-		while(true) {
+		boolean stopped = false;
+		while(!stopped) {
 			loopUntil = 0;
 			boolean bigEnough = false;
-			if(totalValue>maxValue*numbersAdded) {
+			if(totalValue>maxValue*numbersAdded && allocs.size()>20) {
 				if((int)(allocs.size()*0.1)<10) {
 					loopUntil = (int) (allocs.size()*0.9);
 				} else {
@@ -114,7 +117,7 @@ public class Question5 {
 					if(!bigEnough) {
 						for(int j=0; j<allocs.size()&&!limitReached; j++) {
 							int combinedValue = nextValuesB.get(i) + allocs.get(j);
-							if(combinedValue==totalValue) { return numbersAdded + 1; } 
+							if(combinedValue==totalValue) { return numbersAdded+1; } 
 							else if(combinedValue==totalAchievableValue) { nextStage = true; }
 							else if(combinedValue>totalValue) { limitReached=true; }
 							else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);}
@@ -129,17 +132,14 @@ public class Question5 {
 				}
 			}
 			numbersAdded ++;
-			if(nextStage) {
-				return numbersAdded + 1;
-			}
+			if(nextStage) {return numbersAdded+1;}
 			if(isA) { 
 				nextValuesA.clear();
 				//We want a sorted array of all the next items to save time for our logic
 				nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
 				Arrays.sort(nextValuesBArray);
-				//We then delete repetitions and use this
 				nextValuesB = removeRepetions(nextValuesBArray);
-				//Stops us going down routes we have already seen
+				if(nextValuesB.size()==0) {stopped = true;}//Stops us going down routes we have already seen
 				nextValuesB = removeSeenValues(nextValuesB, numbersSeen);
 				numbersSeen.addAll(nextValuesB);
 				numbersSeenArray = numbersSeen.toArray(new Integer[numbersSeen.size()]);
@@ -150,8 +150,8 @@ public class Question5 {
 				//We want a sorted array of all the next items to save time for our logic
 				nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
 				Arrays.sort(nextValuesAArray);
-				//We then delete repetitions and use this
 				nextValuesA = removeRepetions(nextValuesAArray);
+				if(nextValuesA.size()==0) {stopped = true;}
 				//Stops us going down routes we have already seen
 				nextValuesA = removeSeenValues(nextValuesA, numbersSeen);
 				numbersSeen.addAll(nextValuesA);
@@ -161,10 +161,10 @@ public class Question5 {
 			}
 			isA = !isA;
 		}
+		//Would never reach here
+		return 1;
 	}
-	/*
-	 * A function for removing any repetions in an array of already summed values
-	 */
+	
 	public static ArrayList<Integer> removeRepetions(Integer[] array) {
 		ArrayList<Integer> returnList = new ArrayList<Integer>();
 		//Delete repetitions 
@@ -177,10 +177,12 @@ public class Question5 {
 		}
 		return returnList;
 	}
+	
 	public static ArrayList<Integer> removeSeenValues(ArrayList<Integer> toRemove, ArrayList<Integer> seenValues) {
 		int j=0;
+		System.out.println("I HAVE SEEN : " + seenValues.size() + " values");
 		for(int i=0; i<toRemove.size(); i++) {
-			while(j<seenValues.size() && toRemove.get(i)>=seenValues.get(j)) {
+			while(j<seenValues.size()-1 && toRemove.get(i)>=seenValues.get(j)) {
 				if(toRemove.get(i).equals(seenValues.get(j))) {toRemove.remove(i);}
 				j++;
 			}
