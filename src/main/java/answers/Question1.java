@@ -14,11 +14,11 @@ public class Question1 {
 	public static int BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
-		Arrays.sort(portfolios);
 		//Edge case: size 1 or 0
 		if(portfolios.length<=1) {
 			return 0;
 		}
+		Arrays.sort(portfolios);
 
 		int maxEvalBruteForce = 0;
 		for(int i=portfolios.length-1; i>=0; i--) {
