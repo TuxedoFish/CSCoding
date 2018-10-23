@@ -1,6 +1,7 @@
 package answers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.math.*;
 
 import answers.Match;
@@ -13,6 +14,8 @@ public class Question1 {
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
 		System.out.println(portfolios.length);
+		Arrays.sort(portfolios);
+		System.out.println("MIN : " + portfolios[0] + " : MAX : " + portfolios[portfolios.length-1]);
 		//Edge case: size 1 or 0
 		if(portfolios.length<=1) {
 			return 0;
