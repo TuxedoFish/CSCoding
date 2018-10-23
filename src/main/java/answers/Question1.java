@@ -12,25 +12,20 @@ public class Question1 {
 	public static int BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
-		System.out.println(portfolios.length);
 		//Edge case: size 1 or 0
 		if(portfolios.length<=1) {
 			return 0;
 		}
 
 		int maxEvalBruteForce = 0;
-		for(int i=0; i<portfolios.length; i++) {
-			System.out.println(portfolios[i]);
-			for(int j=0; j<portfolios.length; j++) {
-				if(i!=j && (portfolios[i]&65535)>0 && (portfolios[j]&65535)>0) {
-					int value = (portfolios[i]&65535)^(portfolios[j]&65535);
-					if(value > maxEvalBruteForce) {
-						maxEvalBruteForce = value;
-					}
+		for(int i=1; i<portfolios.length; i++) {
+			for(int j=0; j<i; j++) {
+				int value = (portfolios[i]&65535)^(portfolios[j]&65535);
+				if(value > maxEvalBruteForce) {
+					maxEvalBruteForce = value;
 				}
 			}
 		}
-		System.out.println( "ANSWER: " + maxEvalBruteForce );
 		
 		return maxEvalBruteForce;
 	}
