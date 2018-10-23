@@ -11,8 +11,8 @@ public class Question2 {
 		Arrays.sort(cashflowIn);
 		Arrays.sort(cashflowOut);
 		
-		System.out.println("MIN IN" + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length]);
-		System.out.println("MIN OUT" + cashflowIn[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length]);
+		System.out.println("MIN IN" + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length-1]);
+		System.out.println("MIN OUT" + cashflowIn[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length-1]);
 		
 		ArrayList<Integer> cashIn = new ArrayList<Integer>();
 		ArrayList<Integer> cashOut = new ArrayList<Integer>();
