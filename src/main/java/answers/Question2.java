@@ -19,7 +19,7 @@ public class Question2 {
 		
 		if(cashflowIn.length>100) {
 			int minVal = -1;
-			for(int i=0; i<cashflowIn.length; i++) {
+			for(int i=0; i<cashflowIn.length-1; i++) {
 				int value = cashflowIn[i];
 				if(value>minVal) {
 					cashIn.add(value);
@@ -30,7 +30,7 @@ public class Question2 {
 		}
 		if(cashflowOut.length>100) {
 			int minVal = -1;
-			for(int i=0; i<cashflowOut.length; i++) {
+			for(int i=0; i<cashflowOut.length-1; i++) {
 				int value = cashflowOut[i];
 				if(value>minVal) {
 					cashIn.add(value);
