@@ -12,6 +12,7 @@ public class Question1 {
 	public static int BITS_OBSERVED = 1;
 	
 	public static int bestMergedPortfolio(int[] portfolios) {
+		System.out.println(portfolios.length);
 		//Edge case: size 1 or 0
 		if(portfolios.length<=1) {
 			return 0;
