@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Question2 {
 
 	public static int equallyBalancedCashFlow(int[] cashflowIn, int[] cashflowOut) {
-		System.out.println("IN_SIZE" + cashflowIn.length + " OUT_SIZE : " + cashflowOut.length);
+		System.out.println("IN_SIZE : " + cashflowIn.length + " OUT_SIZE : " + cashflowOut.length);
 		
 		Arrays.sort(cashflowIn);
 		Arrays.sort(cashflowOut);
