@@ -19,6 +19,7 @@ public class Question2 {
 		for(int i=0; i<cashflowIn.length; i++) {
 			while(j<cashflowOut.length && cashflowOut[j]<cashflowIn[i]) {
 				if(cashflowIn[i]==cashflowOut[j]) {return 0;}
+				j++;
 			}
 		}
 		//We now know roughly how dense the arrays are
