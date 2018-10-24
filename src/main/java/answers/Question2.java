@@ -4,31 +4,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Question2 {
-
+	
 	public static int equallyBalancedCashFlow(int[] cashflowIn, int[] cashflowOut) {
-		System.out.println("IN_SIZE : " + cashflowIn.length + " OUT_SIZE : " + cashflowOut.length);
+		//Grab the subsets
+		int[] possibilitiesIn = getSubsets(cashflowIn);
+		int[] possibilitiesOut = getSubsets(cashflowOut);
+		//Sort the arrays on size
+		Arrays.sort(possibilitiesIn);
+		Arrays.sort(possibilitiesOut);
 		
-		Arrays.sort(cashflowIn);
-		Arrays.sort(cashflowOut);
-		
-		System.out.println("MIN IN : " + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length-1]);
-		System.out.println("MIN OUT : " + cashflowOut[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length-1]);
-		
-		//Check that none of the arrays contain the same values
-		int j=0;
-		for(int i=0; i<cashflowIn.length; i++) {
-			while(j<cashflowOut.length && cashflowOut[j]<cashflowIn[i]) {
-				if(cashflowIn[i]==cashflowOut[j]) {return 0;}
+		int j = 0;
+		int minValue=Math.max(possibilitiesIn[possibilitiesIn.length-1], possibilitiesOut[possibilitiesOut.length-1]);
+		for(int i=0; i<possibilitiesIn.length; i++) {
+			while(j<possibilitiesOut.length && possibilitiesOut[j]<possibilitiesIn[i]+minValue) {
+				int difference = Math.abs(possibilitiesOut[j]-possibilitiesIn[i]);
+				if(difference<minValue) { minValue = difference; }
 				j++;
 			}
 		}
-		//We now know roughly how dense the arrays are
-		float densityIn = (cashflowIn[cashflowIn.length-1]-cashflowIn[0])/cashflowIn.length;
-		float densityOut = (cashflowOut[cashflowOut.length-1]-cashflowOut[0])/cashflowOut.length;
-
-		System.out.println("IN_DENSITY : " + densityIn + " OUT_DENSITY : " + densityOut);
 		
-		return -1;
+		return minValue;
 	}
+	
+	//Get all subsets of given set[] 
+    public static int[] getSubsets(int[] set) 
+    { 
+        int n = set.length; 
+        int[] subsets = new int[(int) Math.pow(2, set.length)];
+  
+        //Run a loop for printing all 2^n 
+        //subsets one by obe 
+        for (int i = 0; i < (1<<n); i++) { 
+            System.out.print("{ "); 
+  
+            // Print current subset 
+            for (int j = 0; j < n; j++) {
+                //(1<<j) is a number with jth bit 1 
+                //so when we 'and' them with the 
+                //subset number we get which numbers 
+                //are present in the subset and which 
+                //are not 
+                if ((i & (1 << j)) > 0) { subsets[i] += set[j]; }
+            }
+        } 
+        return subsets;
+    } 
 
 }
