@@ -35,8 +35,6 @@ public class Question2 {
         //Run a loop for printing all 2^n 
         //subsets one by obe 
         for (int i = 0; i < (1<<n); i++) { 
-            System.out.print("{ "); 
-  
             // Print current subset 
             for (int j = 0; j < n; j++) {
                 //(1<<j) is a number with jth bit 1 
