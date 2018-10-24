@@ -13,9 +13,9 @@ public class Question2 {
 		Arrays.sort(possibilitiesIn);
 		Arrays.sort(possibilitiesOut);
 		
-		int j = 0;
-		int minValue=Math.max(possibilitiesIn[possibilitiesIn.length-1], possibilitiesOut[possibilitiesOut.length-1]);
-		for(int i=0; i<possibilitiesIn.length; i++) {
+		int j = 1;
+		int minValue=Math.min(possibilitiesIn[1], possibilitiesOut[1]);
+		for(int i=1; i<possibilitiesIn.length; i++) {
 			while(j<possibilitiesOut.length && possibilitiesOut[j]<possibilitiesIn[i]+minValue) {
 				int difference = Math.abs(possibilitiesOut[j]-possibilitiesIn[i]);
 				if(difference<minValue) { minValue = difference; }
@@ -33,7 +33,7 @@ public class Question2 {
         int[] subsets = new int[(int) Math.pow(2, set.length)];
   
         //Run a loop for printing all 2^n 
-        //subsets one by obe 
+        //subsets one by one 
         for (int i = 0; i < (1<<n); i++) { 
             // Print current subset 
             for (int j = 0; j < n; j++) {
