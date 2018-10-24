@@ -11,8 +11,8 @@ public class Question2 {
 		Arrays.sort(cashflowIn);
 		Arrays.sort(cashflowOut);
 		
-		System.out.println("MIN IN" + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length-1]);
-		System.out.println("MIN OUT" + cashflowIn[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length-1]);
+		System.out.println("MIN IN : " + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length-1]);
+		System.out.println("MIN OUT : " + cashflowOut[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length-1]);
 		
 		//Check that none of the arrays contain the same values
 		int j=0;
