@@ -14,31 +14,19 @@ public class Question2 {
 		System.out.println("MIN IN" + cashflowIn[0] + " MAX_IN : " + cashflowIn[cashflowIn.length-1]);
 		System.out.println("MIN OUT" + cashflowIn[0] + " MAX_OUT : " + cashflowOut[cashflowOut.length-1]);
 		
-		ArrayList<Integer> cashIn = new ArrayList<Integer>();
-		ArrayList<Integer> cashOut = new ArrayList<Integer>();
+		//Check that none of the arrays contain the same values
+		int j=0;
+		for(int i=0; i<cashflowIn.length; i++) {
+			while(j<cashflowOut.length && cashflowOut[j]<cashflowIn[i]) {
+				if(cashflowIn[i]==cashflowOut[j]) {return 0;}
+			}
+		}
+		//We now know roughly how dense the arrays are
+		float densityIn = (cashflowIn[cashflowIn.length-1]-cashflowIn[0])/cashflowIn.length;
+		float densityOut = (cashflowOut[cashflowOut.length-1]-cashflowOut[0])/cashflowOut.length;
+
+		System.out.println("IN_DENSITY : " + densityIn + " OUT_DENSITY : " + densityOut);
 		
-		if(cashflowIn.length>100) {
-			int minVal = -1;
-			for(int i=0; i<cashflowIn.length-1; i++) {
-				int value = cashflowIn[i];
-				if(value>minVal) {
-					cashIn.add(value);
-					minVal=value;
-				}
-			}
-			System.out.println("SORTED SIZE IN : " + cashIn.size());
-		}
-		if(cashflowOut.length>100) {
-			int minVal = -1;
-			for(int i=0; i<cashflowOut.length-1; i++) {
-				int value = cashflowOut[i];
-				if(value>minVal) {
-					cashIn.add(value);
-					minVal=value;
-				}
-			}
-			System.out.println("SORTED SIZE OUT : " + cashOut.size());
-		}
 		return -1;
 	}
 
