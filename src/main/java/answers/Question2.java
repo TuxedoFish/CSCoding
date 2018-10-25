@@ -13,16 +13,22 @@ public class Question2 {
 		Arrays.sort(possibilitiesIn);
 		Arrays.sort(possibilitiesOut);
 		
-		System.out.println("IN SUBSETS : " + possibilitiesIn.length + " OUT SUBSETS : " + possibilitiesOut.length);
-		
 		int j = 1;
+		int prevClose = 1;
 		int minValue=Math.min(possibilitiesIn[1], possibilitiesOut[1]);
 		for(int i=1; i<possibilitiesIn.length; i++) {
+			while(j>0 && possibilitiesOut[j]>possibilitiesIn[i]) {
+				int difference = Math.abs(possibilitiesOut[j]-possibilitiesIn[i]);
+				if(difference<minValue) { minValue = difference; }
+				j--;
+			}
+			j = prevClose;
 			while(j<possibilitiesOut.length && possibilitiesOut[j]<possibilitiesIn[i]+minValue) {
 				int difference = Math.abs(possibilitiesOut[j]-possibilitiesIn[i]);
 				if(difference<minValue) { minValue = difference; }
 				j++;
 			}
+			prevClose = j;
 		}
 		
 		return minValue;
