@@ -17,6 +17,7 @@ public class Question2 {
 		int prevClose = 1;
 		int minValue=Math.min(possibilitiesIn[1], possibilitiesOut[1]);
 		for(int i=1; i<possibilitiesIn.length; i++) {
+			if(j>=possibilitiesOut.length) { j=possibilitiesOut.length-1; }
 			while(j>0 && possibilitiesOut[j]>possibilitiesIn[i]) {
 				int difference = Math.abs(possibilitiesOut[j]-possibilitiesIn[i]);
 				if(difference<minValue) { minValue = difference; }
