@@ -30,7 +30,14 @@ public class Question5 {
 		int maxValue = 0;
 		if(allocs.size()==0) {return 0;} 
 		else {maxValue = allocs.get(allocs.size()-1);}
+		
+		System.out.println("NUMBER OF VALUES : " + allowedAllocations.length + " MIN : " + trueMin + " MAX : " 
+								+ maxValue + " AIM FOR : " + totalValue);
+		
 		int loopUntil = 0;
+		if(totalValue>maxValue && allocs.size()>10) {
+			loopUntil = allocs.size()-10;
+		}
 		
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
 		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
