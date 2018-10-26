@@ -36,7 +36,7 @@ public class Question5 {
 		
 		int loopUntil = 0;
 		if(totalValue>maxValue && allocs.size()>10) {
-			loopUntil = allocs.size()-10;
+			loopUntil = allocs.size()-2;
 		}
 		
 		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
