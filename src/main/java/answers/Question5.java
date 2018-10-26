@@ -52,7 +52,7 @@ public class Question5 {
 			//Only keeps going until the value would be greater then totalValue or not
 			//possible to make even with smallest value
 			boolean limitReached = false;
-			for(int j=0; j<allocs.size()-loopUntil && !limitReached; j++) {
+			for(int j=0; j<allocs.size() && !limitReached; j++) {
 				int combinedValue = allocs.get(i) + allocs.get(j);
 				//We only had to combine 2 in order to get the best match hence best match at this stage
 				if(combinedValue==totalValue) {return 2;} 
