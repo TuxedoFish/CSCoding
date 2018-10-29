@@ -31,6 +31,8 @@ public class Question4 {
 			}
 		}
 		
+		System.out.println("I HAVE FOUND : " + options.size() + " OPTIONS");
+		
 		//Loops through all remaining options looking for smallest option
 		int minSize = -1;
 		for(int i=0; i<options.size(); i++) {
