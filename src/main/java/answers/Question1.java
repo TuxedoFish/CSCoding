@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.math.*;
 
 import answers.Match;
-import answers.TwoBitSplit;
 
 public class Question1 {
 	//Constants that define both the problem and the way I solve it
