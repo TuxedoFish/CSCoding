@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public class Question4 {
 
 	public static int selectionFailedTradedesks(String[][] rows, int numberMachines) {
+		//Non sensical to act on empty data
+		if(rows.length == 0)  { return 0; }
 		//Obtains the length of a single floor
 		int floorLength = rows[0].length;
+		if(floorLength == 0)  { return 0; }
 		
 		//Variables to define the selection array for each floor
 		int noPermutations = floorLength - numberMachines + 1;
@@ -31,12 +34,12 @@ public class Question4 {
 			}
 		}
 		
-		System.out.println("I HAVE FOUND : " + options.size() + " OPTIONS");
+		if(options.size()==0) { return 0; }
 		
 		//Loops through all remaining options looking for smallest option
-		int minSize = -1;
+		int minSize = 0;
 		for(int i=0; i<options.size(); i++) {
-			if(minSize == -1 || options.get(i)<minSize) { minSize = options.get(i); }
+			if(minSize == 0 || options.get(i)<minSize) { minSize = options.get(i); }
 		}
 		return minSize;
 	}
