@@ -22,7 +22,7 @@ public class Question4 {
 				for(int k=0; k<floorLength && exists; k++) {
 					if( ((numberMachinesBinary<<j)>>(k)&1) == 1 ) {
 						//This row[i][k] should be in the element
-						if(rows[i][k].contains("[a-zA-Z]+")) { exists = false; }
+						if(rows[i][k].matches(".*[a-zA-Z]+.*")) { exists = false; }
 						else { element += Integer.valueOf(rows[i][k]); }
 					}
 				}
