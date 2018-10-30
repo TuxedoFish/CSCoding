@@ -49,7 +49,7 @@ public class Question5 {
 					}
 				}
 			} else {
-				for(int i=1; i<=LOOP_NUMBERS && i <= selectionsPerm.length; i++) {
+				for(int i=1; i <= selectionsPerm.length; i++) {
 					//Adds the LOOP_NUMBERS highest values to the highest other LOOP_NUMBERS values excluding maximum
 					for(int j=1; j<=LOOP_NUMBERS && j <= allowedAllocations.length; j++) {
 						selectionsTemp.add(selectionsPerm[selectionsPerm.length-i] + allowedAllocations[allowedAllocations.length-j]);
