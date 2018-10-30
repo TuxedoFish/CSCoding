@@ -34,7 +34,7 @@ public class Question5 {
 		
 		while(true) {
 			//Logically if (totalValue >> maxValue) we only want to add very large values until we get pretty close
-			if( max*(numbersAdded+5) > totalValue || allowedAllocations.length<5 ) { closeEnough = true; } 
+			if( max*(numbersAdded+2) > totalValue || allowedAllocations.length<5 ) { closeEnough = true; } 
 			else { closeEnough = false; }
 			
 			if(closeEnough) {
