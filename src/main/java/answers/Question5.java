@@ -34,7 +34,7 @@ public class Question5 {
 		
 		while(true) {
 			//Logically if (totalValue >> maxValue) we only want to add very large values until we get pretty close
-			if( max*(numbersAdded+2) > totalValue || allowedAllocations.length<5 ) { closeEnough = true; } 
+			if( max*(numbersAdded+3) > totalValue || allowedAllocations.length<5 ) { closeEnough = true; } 
 			else { closeEnough = false; }
 			
 			if(closeEnough) {
@@ -60,15 +60,11 @@ public class Question5 {
 			if(selectionsTemp.size()==0) { return 0; }
 			//Stores the temporary numbers in a permanent array for the next check
 			//Also clears the old array which now will have values added
-			if(closeEnough) {
-				//If it was close it will remove repitions as this slows it down very much
-				//Since each step effectively squares the calculations being done
-				Collections.sort(selectionsTemp);
-				selectionsPerm = removeRepetitions(getIntegerArray(selectionsTemp));
-			} else {
-				selectionsPerm = getIntegerArray(selectionsTemp);
-			}
-
+			//If it was close it will remove repitions as this slows it down very much
+			//Since each step effectively squares the calculations being done
+			Collections.sort(selectionsTemp);
+			selectionsPerm = removeRepetitions(getIntegerArray(selectionsTemp));
+			
 			//Must clear the temporary numbers every time
 			selectionsTemp.clear();
 			numbersAdded ++;
