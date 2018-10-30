@@ -27,9 +27,12 @@ public class Question5 {
 		//Arrays to store the results of selections
 		ArrayList<Integer> selectionsTemp = new ArrayList<Integer>();
 		int[] selectionsPerm = allowedAllocations;
+
+		//Checks if any of the numbers are actually just the answer
+		for(int i=0; i<selectionsPerm.length; i++) { if(selectionsPerm[i]==totalValue) { return 1; } }
 		
 		//Set up some variables we will loop over
-		int numbersAdded = 0;
+		int numbersAdded = 1;
 		boolean closeEnough = false;
 		
 		while(true) {
