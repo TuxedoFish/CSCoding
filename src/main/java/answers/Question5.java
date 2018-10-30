@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Question5 {
-	public static int LOOP_NUMBERS = 10;
+	public static int LOOP_NUMBERS = 2;
 	
 	//Takes an array @allowedAllocations of numbers and a value @totalValue
 	//Returns a number that represents shortest amount of numbers added together to make the value
