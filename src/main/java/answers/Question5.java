@@ -2,163 +2,93 @@ package answers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Question5 {
+	public static int LOOP_NUMBERS = 10;
+	
+	//Takes an array @allowedAllocations of numbers and a value @totalValue
+	//Returns a number that represents shortest amount of numbers added together to make the value
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
-		//Trivial solution if only one value in array
-		if(allowedAllocations.length==0) { return 0; }
-		if(allowedAllocations.length==1) { return totalValue/allowedAllocations[0]; }
-		//Having it in size order will help us massively
+		//First we sort the array and remove any repetitions
 		Arrays.sort(allowedAllocations);
+		removeRepetitions(allowedAllocations);
 		
-		//Now we define an array that will hold no duplicates or values higher then totalValue
-		ArrayList<Integer> allocs = new ArrayList<Integer>();
-		//Puts only unique values and values lower then the total into an arraylist (still sorted)
-		int minimumValue = -1;
-		int trueMin = 0;
-		for(int i=0; i<allowedAllocations.length; i++) {
-			if(allowedAllocations[i]>minimumValue && allowedAllocations[i]<totalValue) {
-				allocs.add(allowedAllocations[i]);
-				if(minimumValue==-1) { trueMin = allowedAllocations[i]; }
-				minimumValue=allowedAllocations[i];
-				//Trivial Solution if totalValue is contained within the allowedAllocations of 1
-			} else if (allowedAllocations[i]==totalValue) { return 1; }
-		}
+		//Now we have sorted arrays
+		int min = allowedAllocations[0]; 
+		int max = allowedAllocations[allowedAllocations.length-1];
+		//Arrays to store the results of selections
+		ArrayList<Integer> selectionsTemp = new ArrayList<Integer>();
+		int[] selectionsPerm = allowedAllocations;
 		
-		int totalAchievableValue = totalValue-trueMin;
+		//Set up some variables we will loop over
+		int numbersAdded = 0;
+		boolean closeEnough = false;
 		
-		int maxValue = 0;
-		if(allocs.size()==0) {return 0;} 
-		else {maxValue = allocs.get(allocs.size()-1);}
-		
-		System.out.println("NUMBER OF VALUES : " + allowedAllocations.length + " MIN : " + trueMin + " MAX : " 
-								+ maxValue + " AIM FOR : " + totalValue);
-		
-		int loopUntil = 0;
-		if(totalValue>maxValue && allocs.size()>10) {
-			loopUntil = allocs.size()-2;
-		}
-		
-		ArrayList<Integer> nextValuesA = new ArrayList<Integer>();
-		ArrayList<Integer> nextValuesB = new ArrayList<Integer>();
-		
-		Integer[] nextValuesAArray = null; Integer[] nextValuesBArray = null;
-		boolean isA = true;
-		
-		//Now that we have a sorted array we want to look for 2 perfect matches but also store any combination 
-		//of 2 allocations so we can then check those on the next round
-		boolean nextStage = false;
-		for(int i=allocs.size()-1; i>=loopUntil; i--) {
-			//Only keeps going until the value would be greater then totalValue or not
-			//possible to make even with smallest value
-			boolean limitReached = false;
-			for(int j=0; j<allocs.size() && !limitReached; j++) {
-				int combinedValue = allocs.get(i) + allocs.get(j);
-				//We only had to combine 2 in order to get the best match hence best match at this stage
-				if(combinedValue==totalValue) {return 2;} 
-				else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-				if(combinedValue>totalValue) { limitReached=true; }
-				else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);} 
-			}
-		}
-		
-		//We want a sorted array of all the next items to save time for our logic
-		nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
-		Arrays.sort(nextValuesAArray);
-		nextValuesA=removeRepetions(nextValuesAArray);
-		
-		//Here we reached the value that is one min value away from the true value so we know it will be one level away
-		if(nextStage) {return 3;}
-		
-		int numbersAdded = 2;
-		//Now we need to calculate the logic for going even deeper
-		boolean stopped = false;
-		while(!stopped) {
-			loopUntil = 0;
-			boolean bigEnough = false;
-			if(totalValue>maxValue*(numbersAdded+1) && allocs.size()>20) {
-				loopUntil = allocs.size()-2;
-				bigEnough = true;
-			}
-			if(isA) {
-				for(int i=nextValuesA.size()-1; i>=0; i--) {
-					boolean limitReached = false;
-					if(!bigEnough) {
-						for(int j=0; j<allocs.size()&&!limitReached; j++) {
-							int combinedValue = nextValuesA.get(i) + allocs.get(j);
-							if(combinedValue==totalValue) {return numbersAdded+1;} 
-							else if(combinedValue>totalValue) { limitReached=true; }
-							else if(combinedValue==totalAchievableValue) { nextStage = true; } 
-							else if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue);}
-						}
-					} else {
-						for(int j=(allocs.size()-1); j>loopUntil; j--) {
-							int combinedValue = nextValuesA.get(i) + allocs.get(j);
-							if(combinedValue<totalAchievableValue) { nextValuesB.add(combinedValue); }
-							if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						}
+		while(true) {
+			//Logically if (totalValue >> maxValue) we only want to add very large values until we get pretty close
+			if( max*(numbersAdded+5) > totalValue && allowedAllocations.length>5 ) { closeEnough = true; } 
+			else { closeEnough = false; }
+			
+			if(closeEnough) {
+				//Logic too loop through all possibilities
+				for(int i=0; i<selectionsPerm.length; i++) {
+					for(int j=0; j<allowedAllocations.length; j++) {
+						int value = selectionsPerm[i] + allowedAllocations[j];
+						//If the total is still below the max value we are still okay to add
+						if(value<totalValue) { selectionsTemp.add(value); }
+						//If it is equal to the value we have found our optimum route
+						if(value==totalValue) { return numbersAdded + 1; }
 					}
 				}
 			} else {
-				for(int i=nextValuesB.size()-1; i>=0; i--) {
-					boolean limitReached = false;
-					if(!bigEnough) {
-						for(int j=0; j<allocs.size()&&!limitReached; j++) {
-							int combinedValue = nextValuesB.get(i) + allocs.get(j);
-							if(combinedValue==totalValue) { return numbersAdded+1; } 
-							else if(combinedValue==totalAchievableValue) { nextStage = true; }
-							else if(combinedValue>totalValue) { limitReached=true; }
-							else if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue);}
-						}
-					} else {
-						for(int j=(allocs.size()-1); j>loopUntil;j--) {
-							int combinedValue = nextValuesB.get(i) + allocs.get(j);
-							if(combinedValue<totalAchievableValue) { nextValuesA.add(combinedValue); }
-							if(combinedValue==totalAchievableValue) { nextStage = true; } 
-						}
+				for(int i=1; i<=LOOP_NUMBERS && i <= selectionsPerm.length; i++) {
+					//Adds the LOOP_NUMBERS highest values to the highest other LOOP_NUMBERS values excluding maximum
+					for(int j=1; j<=LOOP_NUMBERS && j <= allowedAllocations.length; j++) {
+						selectionsTemp.add(selectionsPerm[selectionsPerm.length-i] + allowedAllocations[allowedAllocations.length-j]);
 					}
 				}
 			}
+			//If we have no options left then we may have missed an option or there are no possible options
+			if(selectionsTemp.size()==0) { return 0; }
+			//Stores the temporary numbers in a permanent array for the next check
+			//Also clears the old array which now will have values added
+			if(closeEnough) {
+				//If it was close it will remove repitions as this slows it down very much
+				//Since each step effectively squares the calculations being done
+				Collections.sort(selectionsTemp);
+				selectionsPerm = removeRepetitions(getIntegerArray(selectionsTemp));
+			} else {
+				selectionsPerm = getIntegerArray(selectionsTemp);
+				selectionsTemp.clear();
+			}
+			
 			numbersAdded ++;
-			if(totalValue<=maxValue*(numbersAdded+1) && allocs.size()>20) {
-				bigEnough = false;
-			}
-			if(nextStage) {return numbersAdded+1;}
-			if(isA) { 
-				nextValuesA.clear();
-				if(!bigEnough) {
-					//We want a sorted array of all the next items to save time for our logic
-					nextValuesBArray = nextValuesB.toArray(new Integer[nextValuesB.size()]);
-					Arrays.sort(nextValuesBArray);
-					nextValuesB = removeRepetions(nextValuesBArray);
-					if(nextValuesB.size()==0) {stopped = true;}
-				}
-			} else { 
-				nextValuesB.clear(); 
-				if(!bigEnough) {
-					//We want a sorted array of all the next items to save time for our logic
-					nextValuesAArray = nextValuesA.toArray(new Integer[nextValuesA.size()]);
-					Arrays.sort(nextValuesAArray);
-					nextValuesA = removeRepetions(nextValuesAArray);
-					if(nextValuesA.size()==0) {stopped = true;}
-				}
-			}
-			isA = !isA;
 		}
-		//Would never reach here
-		return 0;
 	}
-	
-	public static ArrayList<Integer> removeRepetions(Integer[] array) {
-		ArrayList<Integer> returnList = new ArrayList<Integer>();
-		//Delete repetitions 
-		int minimumValue = -1;
-		for(int i=0; i<array.length; i++) {
-			if(array[i]>minimumValue) {
-				returnList.add(array[i]);
-				minimumValue=array[i];
-			} 
+	/*
+	 * Takes an ArrayList  
+	 * Creates an Array of defined size 
+	 * Adds the contents of the ArrayList to the Array
+	 */
+	public static int[] getIntegerArray(ArrayList<Integer> array) {
+		int[] out = new int[array.size()];
+		for(int i=0; i<array.size(); i++) { out[i]=array.get(i); }
+		return out;
+	}
+	/*
+	 * Takes a sorted int[]
+	 * Loops through the list deleting any repetitions
+	 * Then gets it as an int[] and returns
+	 */
+	public static int[] removeRepetitions(int[] in) {
+		ArrayList<Integer> out_list = new ArrayList<Integer>();
+		int currentVal = -1;
+		for(int i=0; i<in.length; i++) {
+			int val = in[i];
+			if(val != currentVal) { out_list.add(val); currentVal = val; }
 		}
-		return returnList;
+		return getIntegerArray(out_list);
+		
 	}
 }
