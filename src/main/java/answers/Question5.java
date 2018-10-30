@@ -10,6 +10,13 @@ public class Question5 {
 	//Takes an array @allowedAllocations of numbers and a value @totalValue
 	//Returns a number that represents shortest amount of numbers added together to make the value
 	public static int shareExchange(int[] allowedAllocations, int totalValue) {
+		//Edge cases
+		if(allowedAllocations.length==0) { return 0; }
+		if(allowedAllocations.length==1) {
+			if(totalValue % allowedAllocations[0] == 0) { return totalValue/allowedAllocations[0]; } 
+			else {return 0;}
+		}
+		
 		//First we sort the array and remove any repetitions
 		Arrays.sort(allowedAllocations);
 		removeRepetitions(allowedAllocations);
@@ -60,9 +67,10 @@ public class Question5 {
 				selectionsPerm = removeRepetitions(getIntegerArray(selectionsTemp));
 			} else {
 				selectionsPerm = getIntegerArray(selectionsTemp);
-				selectionsTemp.clear();
 			}
-			
+
+			//Must clear the temporary numbers every time
+			selectionsTemp.clear();
 			numbersAdded ++;
 		}
 	}
